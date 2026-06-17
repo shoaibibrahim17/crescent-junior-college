@@ -252,16 +252,6 @@ body {
   .course-tab:hover .tab-label {
     transform: translateY(-2px);
   }
-
-  /* Why-Crescent items are real cards only below lg (horizontal rail).
-     At lg they flatten into borderless list rows, where a lift/shadow
-     would look detached — so neutralise it there. */
-  @media (min-width: 1024px) {
-    .why-card:hover {
-      transform: none;
-      box-shadow: none;
-    }
-  }
 }
 
 /* Honour reduced-motion: keep the hover state instant + flat. */
