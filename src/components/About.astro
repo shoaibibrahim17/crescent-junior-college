@@ -1,89 +1,83 @@
 ---
-import { GraduationCap, MapPin, Compass, Quote } from "lucide-astro";
 import { college } from "../data/college";
 
-// NOTE: Copy below is deliberately conservative — no achievements, ranks or
-// numbers are claimed. Confirm any additions with the college office.
-const highlights = [
-  {
-    icon: GraduationCap,
-    title: "Intermediate focus",
-    text: "A dedicated junior college concentrating on the two-year intermediate programme.",
-  },
-  {
-    icon: Compass,
-    title: "Academic guidance",
-    text: "Support in choosing and progressing through the right stream for each student.",
-  },
-  {
-    icon: MapPin,
-    title: "Accessible location",
-    text: `Located in the ${college.contact.locality}, Adilabad — easy to reach for local families.`,
-  },
+// NOTE: Copy is deliberately conservative — no achievements, ranks or numbers
+// are claimed. Confirm any additions with the college office.
+const facts = [
+  { label: "Type", value: college.type },
+  { label: "Mode", value: college.coed },
+  { label: "Streams", value: "BiPC · CEC · CSP" },
+  { label: "Location", value: `${college.contact.locality}, Adilabad` },
 ];
 ---
 
-<section id="about" class="container-px mx-auto max-w-7xl scroll-mt-24 py-16 lg:py-24">
-  <div class="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
-    <!-- Left: heading + logo panel -->
-    <div data-reveal>
-      <p class="eyebrow mb-3">About the college</p>
-      <h2 class="font-display text-3xl font-extrabold text-ink-900 sm:text-4xl">
-        A focused place for intermediate study in Adilabad
-      </h2>
-      <p class="mt-5 text-lg leading-relaxed text-ink-500/80">
-        {college.intro}
-      </p>
+<section id="about" class="section-y scroll-mt-24">
+  <div class="container-px mx-auto max-w-7xl">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <!-- Left: section intro + pull quote -->
+      <div class="lg:col-span-5" data-reveal-group>
+        <p class="kicker" data-reveal>About the college</p>
+        <h2 class="mt-5 font-serif text-[1.7rem] font-medium leading-tight text-ink-900 sm:text-[2rem]" data-reveal>
+          An institution built around focus, not scale.
+        </h2>
 
-      <figure
-        class="mt-8 rounded-card border border-mist bg-surface p-6 shadow-[0_10px_30px_-18px_rgba(10,37,64,0.3)]"
-      >
-        <Quote size={22} class="text-lime-500" />
-        <blockquote class="mt-3 font-display text-lg font-semibold leading-snug text-ink-900">
-          “Our aim is simple — a disciplined, supportive environment where
-          intermediate students can study with focus.”
-        </blockquote>
-        <figcaption class="mt-3 text-sm text-ink-500/60">
-          {/* TO BE CONFIRMED: attribute to Principal / Management when verified. */}
-          — Crescent Junior College
-        </figcaption>
-      </figure>
-    </div>
-
-    <!-- Right: highlights + image placeholder -->
-    <div class="flex flex-col gap-5" data-reveal style="--reveal-delay:100ms">
-      <div
-        class="bg-grid relative flex min-h-[12rem] items-center justify-center overflow-hidden rounded-card border border-mist bg-brand-50"
-      >
-        <img
-          src="/brand/logo-watermark-visible.png"
-          alt="Crescent Junior College emblem"
-          width="160"
-          height="160"
-          loading="lazy"
-          class="h-32 w-32 object-contain opacity-90"
-        />
-        <span
-          class="absolute bottom-3 right-4 text-xs font-medium text-brand-700/50"
-          >Replace with a campus photo</span
-        >
+        <figure class="mt-8 border-l-2 border-brand-700 pl-5" data-reveal>
+          <blockquote class="font-serif text-lg italic leading-relaxed text-ink-700">
+            “Our aim is simple — a disciplined, supportive environment where
+            intermediate students can study with focus.”
+          </blockquote>
+          <figcaption class="mt-3 text-xs font-semibold uppercase tracking-wider text-ink-400">
+            {/* TO BE CONFIRMED: attribute to Principal / Management when verified. */}
+            Crescent Junior College
+          </figcaption>
+        </figure>
       </div>
 
-      <ul class="grid gap-4 sm:grid-cols-1">
-        {
-          highlights.map((h) => (
-            <li class="flex gap-4 rounded-card border border-mist bg-surface p-5 transition hover:border-brand-200 hover:shadow-sm">
-              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
-                <h.icon size={20} />
-              </span>
-              <div>
-                <h3 class="font-display font-semibold text-ink-900">{h.title}</h3>
-                <p class="mt-1 text-sm leading-relaxed text-ink-500/75">{h.text}</p>
+      <!-- Right: body + facts + emblem plate -->
+      <div class="lg:col-span-7" data-reveal-group>
+        <p class="max-w-xl text-[1.05rem] leading-relaxed text-ink-500" data-reveal>
+          {college.intro}
+        </p>
+        <p class="mt-4 max-w-xl leading-relaxed text-ink-400" data-reveal>
+          The college concentrates on the two-year intermediate programme —
+          guiding each student to the right stream and supporting them through to
+          their public examinations, close to home in Adilabad.
+        </p>
+
+        <!-- Facts: editorial definition rows with hairlines -->
+        <dl class="mt-9 grid grid-cols-1 sm:grid-cols-2" data-reveal>
+          {
+            facts.map((f) => (
+              <div class="flex items-baseline justify-between gap-4 border-t border-line py-3.5 sm:odd:pr-8 sm:even:pl-8 sm:even:border-l">
+                <dt class="text-xs font-semibold uppercase tracking-wider text-ink-400">
+                  {f.label}
+                </dt>
+                <dd class="text-right text-sm font-medium text-ink-900">{f.value}</dd>
               </div>
-            </li>
-          ))
-        }
-      </ul>
+            ))
+          }
+        </dl>
+
+        <!-- Emblem plate: intentional placeholder for a campus photo -->
+        <figure
+          class="bg-grain relative mt-8 flex aspect-[16/7] items-center justify-center overflow-hidden rounded-card border border-line bg-paper-2"
+          data-reveal
+        >
+          <img
+            src="/brand/logo-watermark-visible.png"
+            alt="Crescent Junior College emblem"
+            width="120"
+            height="120"
+            loading="lazy"
+            class="h-24 w-24 object-contain opacity-90"
+          />
+          <figcaption
+            class="absolute bottom-3 left-4 text-[0.7rem] font-medium uppercase tracking-wider text-ink-400"
+          >
+            Campus photo to be added
+          </figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </section>

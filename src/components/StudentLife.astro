@@ -10,75 +10,49 @@ import {
 
 // Academic, local-feeling student-life points — no fabricated facilities.
 const items = [
-  {
-    icon: BookMarked,
-    title: "Study-first routine",
-    text: "Structured timetables that keep the two intermediate years on track.",
-  },
-  {
-    icon: Users2,
-    title: "Small, familiar setting",
-    text: "A college where students and teachers actually know one another.",
-  },
-  {
-    icon: Clock4,
-    title: "Regular practice",
-    text: "Steady revision and tests to build exam readiness over time.",
-  },
-  {
-    icon: Lightbulb,
-    title: "Subject guidance",
-    text: "Help understanding concepts across science and commerce/arts subjects.",
-  },
-  {
-    icon: CalendarHeart,
-    title: "Campus occasions",
-    text: "Assemblies and college days that mark the academic calendar.",
-  },
-  {
-    icon: Sprout,
-    title: "Rooted in Adilabad",
-    text: "A local college serving students and families across the district.",
-  },
+  { icon: BookMarked, title: "Study-first routine", text: "Structured timetables that keep both intermediate years on track." },
+  { icon: Clock4, title: "Regular practice", text: "Steady revision and tests that build exam readiness over time." },
+  { icon: Lightbulb, title: "Subject guidance", text: "Help understanding concepts across science and commerce/arts." },
+  { icon: Users2, title: "A familiar setting", text: "A college where students and teachers actually know one another." },
+  { icon: CalendarHeart, title: "Campus occasions", text: "Assemblies and college days that mark the academic calendar." },
+  { icon: Sprout, title: "Rooted in Adilabad", text: "A local college serving students and families across the district." },
 ];
 ---
 
-<section class="bg-ink-900 relative overflow-hidden">
+<section class="relative overflow-hidden bg-ink-900 text-white">
   <img
     src="/brand/logo-watermark-subtle.png"
     alt=""
     aria-hidden="true"
     loading="lazy"
-    class="pointer-events-none absolute -left-20 bottom-0 w-96 opacity-[0.05]"
+    class="pointer-events-none absolute -left-24 bottom-[-3rem] w-80 opacity-[0.04]"
   />
-  <div class="container-px relative mx-auto max-w-7xl py-16 lg:py-24">
-    <div class="max-w-2xl" data-reveal>
-      <p class="eyebrow mb-3 text-cyan-300">Student life</p>
-      <h2 class="font-display text-3xl font-extrabold text-white sm:text-4xl">
-        Everyday life at the college
-      </h2>
-      <p class="mt-4 text-lg leading-relaxed text-white/70">
-        A calm, academic atmosphere built around regular study, guidance and a
-        familiar campus community.
-      </p>
-    </div>
+  <div class="container-px section-y relative mx-auto max-w-7xl">
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <p class="kicker !text-cyan-400" data-reveal>Student life</p>
+        <h2 class="mt-5 font-serif text-[1.7rem] font-medium leading-tight text-white sm:text-[2rem]" data-reveal>
+          A calm daily rhythm.
+        </h2>
+        <p class="mt-4 leading-relaxed text-white/60" data-reveal>
+          Everyday life here is built around steady study, guidance and a familiar
+          campus community — academic, not flashy.
+        </p>
+      </div>
 
-    <ul class="mt-10 grid gap-px overflow-hidden rounded-card bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        items.map((item, i) => (
-          <li
-            class="bg-ink-900 p-6 transition hover:bg-white/[0.03]"
-            data-reveal
-            style={`--reveal-delay:${i * 50}ms`}
-          >
-            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-lime-300">
-              <item.icon size={20} />
-            </span>
-            <h3 class="mt-4 font-display font-semibold text-white">{item.title}</h3>
-            <p class="mt-1.5 text-sm leading-relaxed text-white/65">{item.text}</p>
-          </li>
-        ))
-      }
-    </ul>
+      <ul class="grid gap-x-12 sm:grid-cols-2 lg:col-span-8" data-reveal-group>
+        {
+          items.map((item) => (
+            <li class="flex items-start gap-4 border-t border-white/10 py-5" data-reveal>
+              <item.icon size={18} class="mt-0.5 shrink-0 text-lime-400" />
+              <div>
+                <h3 class="font-serif text-lg font-medium text-white">{item.title}</h3>
+                <p class="mt-1 text-[0.92rem] leading-relaxed text-white/55">{item.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </div>
 </section>

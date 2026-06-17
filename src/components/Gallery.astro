@@ -1,11 +1,10 @@
 ---
-import { Image, ArrowRight, X, ZoomIn } from "lucide-astro";
+import { Image, X, Plus } from "lucide-astro";
 import { college } from "../data/college";
 
 export interface Props {
   limit?: number;
   showViewAll?: boolean;
-  /** Heading context — home uses a section, gallery page sets its own. */
   heading?: boolean;
 }
 
@@ -22,84 +21,95 @@ const spanClass: Record<string, string> = {
 };
 ---
 
-<section id="gallery" class="container-px mx-auto max-w-7xl scroll-mt-24 py-16 lg:py-24">
-  {
-    heading && (
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between" data-reveal>
-        <div class="max-w-xl">
-          <p class="eyebrow mb-3">Gallery</p>
-          <h2 class="font-display text-3xl font-extrabold text-ink-900 sm:text-4xl">
-            A look around the college
-          </h2>
-          <p class="mt-3 text-lg leading-relaxed text-ink-500/75">
-            Placeholder tiles for now — real campus photos can drop straight in.
-          </p>
-        </div>
-        {showViewAll && (
-          <a
-            href="/gallery"
-            class="inline-flex w-fit items-center gap-1.5 rounded-full border border-brand-200 bg-surface px-4 py-2 text-sm font-semibold text-brand-700 transition hover:border-brand-700 hover:bg-brand-50"
-          >
-            View gallery <ArrowRight size={15} />
-          </a>
-        )}
-      </div>
-    )
-  }
-
-  <div
-    class:list={[
-      "grid auto-rows-[8.5rem] grid-cols-2 gap-3 sm:auto-rows-[9.5rem] md:grid-cols-4",
-      heading ? "mt-8" : "",
-    ]}
-  >
+<section id="gallery" class="section-y scroll-mt-24">
+  <div class="container-px mx-auto max-w-7xl">
     {
-      items.map((item, i) => (
-        <button
-          type="button"
-          class:list={[
-            "gallery-tile group relative overflow-hidden rounded-xl border border-mist bg-brand-50 text-left transition hover:shadow-[0_14px_34px_-20px_rgba(10,37,64,0.5)] focus-visible:outline-none",
-            spanClass[item.span] ?? "col-span-1 row-span-1",
-          ]}
-          data-caption={item.caption}
-          data-src={item.src}
-          data-alt={item.alt}
-          data-reveal
-          style={`--reveal-delay:${i * 45}ms`}
-        >
-          {item.src ? (
-            <img
-              src={item.src}
-              alt={item.alt}
-              loading="lazy"
-              class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <span class="bg-grid flex h-full w-full flex-col items-center justify-center gap-2 text-brand-700/70">
-              <Image size={24} />
-              <span class="px-2 text-center text-xs font-semibold">{item.caption}</span>
-            </span>
+      heading && (
+        <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between" data-reveal-group>
+          <div class="max-w-xl">
+            <p class="kicker" data-reveal>Gallery</p>
+            <h2 class="mt-5 font-serif text-[1.7rem] font-medium leading-tight text-ink-900 sm:text-[2rem]" data-reveal>
+              A look around the college.
+            </h2>
+            <p class="mt-3 leading-relaxed text-ink-400" data-reveal>
+              These tiles are reserved for authentic campus photographs — ready to
+              drop straight in.
+            </p>
+          </div>
+          {showViewAll && (
+            <a
+              href="/gallery"
+              class="link-underline inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-ink-900"
+              data-reveal
+            >
+              View full gallery →
+            </a>
           )}
-          <span class="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-ink-900/55 via-transparent to-transparent opacity-0 transition group-hover:opacity-100">
-            <span class="flex w-full items-center justify-between gap-2 p-3 text-xs font-semibold text-white">
-              {item.caption}
-              <ZoomIn size={15} />
-            </span>
-          </span>
-        </button>
-      ))
+        </div>
+      )
     }
-  </div>
 
-  <p class="mt-4 text-center text-xs text-ink-500/55" data-reveal>
-    Demo placeholders — replace with authentic Crescent Junior College photos.
-  </p>
+    <div
+      class:list={[
+        "grid auto-rows-[8rem] grid-cols-2 gap-2.5 sm:auto-rows-[9.5rem] md:grid-cols-4",
+        heading ? "mt-9" : "",
+      ]}
+    >
+      {
+        items.map((item, i) => (
+          <button
+            type="button"
+            class:list={[
+              "gallery-tile group relative overflow-hidden rounded-card border border-line bg-paper-2 text-left transition hover:border-brand-200 focus-visible:outline-none",
+              spanClass[item.span] ?? "col-span-1 row-span-1",
+            ]}
+            data-caption={item.caption}
+            data-src={item.src}
+            data-alt={item.alt}
+            data-reveal
+            style={`--reveal-delay:${i * 60}ms`}
+          >
+            {item.src ? (
+              <img
+                src={item.src}
+                alt={item.alt}
+                loading="lazy"
+                class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+              />
+            ) : (
+              <span class="bg-grain flex h-full w-full flex-col justify-between p-3">
+                <span class="flex items-center justify-between">
+                  <span class="numeral text-xs text-ink-400">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <Image size={15} class="text-ink-400/70" />
+                </span>
+                <span>
+                  <span class="block text-[0.78rem] font-semibold text-ink-700">{item.caption}</span>
+                  <span class="mt-0.5 flex items-center gap-1 text-[0.66rem] font-medium uppercase tracking-wide text-brand-700/70">
+                    <Plus size={10} /> Photo to be added
+                  </span>
+                </span>
+              </span>
+            )}
+            <span class="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-ink-900/45 via-transparent to-transparent opacity-0 transition group-hover:opacity-100">
+              <span class="p-3 text-xs font-semibold text-white">{item.caption}</span>
+            </span>
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="mt-5 text-center text-xs text-ink-400" data-reveal>
+      Branded placeholders — replace with authentic Crescent Junior College photographs.
+    </p>
+  </div>
 </section>
 
 <!-- Lightbox modal -->
 <div
   id="lightbox"
-  class="fixed inset-0 z-[90] hidden items-center justify-center bg-ink-900/80 p-4 backdrop-blur-sm"
+  class="fixed inset-0 z-[90] hidden items-center justify-center bg-ink-900/85 p-4 backdrop-blur-sm"
   role="dialog"
   aria-modal="true"
   aria-label="Image preview"
@@ -107,23 +117,23 @@ const spanClass: Record<string, string> = {
   <button
     id="lightbox-close"
     type="button"
-    class="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+    class="absolute right-4 top-4 rounded-full border border-white/15 p-2 text-white transition hover:bg-white/10"
     aria-label="Close preview"
   >
-    <X size={22} />
+    <X size={20} />
   </button>
   <figure class="max-h-full w-full max-w-3xl">
     <div
       id="lightbox-stage"
-      class="bg-grid flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-brand-50"
+      class="bg-grain flex aspect-[4/3] items-center justify-center overflow-hidden rounded-card border border-white/10 bg-paper-2"
     >
       <img id="lightbox-img" src="" alt="" class="hidden h-full w-full object-contain" />
-      <div id="lightbox-placeholder" class="flex flex-col items-center gap-3 text-brand-700/70">
-        <Image size={40} />
-        <span class="text-sm font-semibold">Campus photo coming soon</span>
+      <div id="lightbox-placeholder" class="flex flex-col items-center gap-3 text-ink-400">
+        <Image size={36} />
+        <span class="text-sm font-medium">Campus photo to be added</span>
       </div>
     </div>
-    <figcaption id="lightbox-caption" class="mt-3 text-center text-sm font-medium text-white/90"></figcaption>
+    <figcaption id="lightbox-caption" class="mt-3 text-center text-sm font-medium text-white/85"></figcaption>
   </figure>
 </div>
 
@@ -133,9 +143,11 @@ const spanClass: Record<string, string> = {
   const lbPlaceholder = document.getElementById("lightbox-placeholder");
   const lbCaption = document.getElementById("lightbox-caption");
   const closeBtn = document.getElementById("lightbox-close");
+  let lastFocus: HTMLElement | null = null;
 
-  function openLb(src: string, alt: string, caption: string) {
+  function openLb(src: string, alt: string, caption: string, trigger: HTMLElement) {
     if (!lb) return;
+    lastFocus = trigger;
     if (lbCaption) lbCaption.textContent = caption;
     if (src && lbImg && lbPlaceholder) {
       lbImg.src = src;
@@ -156,11 +168,12 @@ const spanClass: Record<string, string> = {
     lb.classList.add("hidden");
     lb.classList.remove("flex");
     document.body.style.overflow = "";
+    lastFocus?.focus();
   }
 
   document.querySelectorAll<HTMLButtonElement>(".gallery-tile").forEach((tile) =>
     tile.addEventListener("click", () =>
-      openLb(tile.dataset.src ?? "", tile.dataset.alt ?? "", tile.dataset.caption ?? ""),
+      openLb(tile.dataset.src ?? "", tile.dataset.alt ?? "", tile.dataset.caption ?? "", tile),
     ),
   );
   closeBtn?.addEventListener("click", closeLb);

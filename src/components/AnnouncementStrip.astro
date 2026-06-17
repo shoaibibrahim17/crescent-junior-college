@@ -1,50 +1,44 @@
 ---
-import { Phone, MessageCircle, MapPin, Megaphone } from "lucide-astro";
+import { Phone, MessageCircle, MapPin } from "lucide-astro";
 import { college } from "../data/college";
 
 const { contact } = college;
 ---
 
-<div class="bg-ink-900 text-white">
+<div class="bg-ink-900 text-white/90">
   <div
-    class="container-px mx-auto flex max-w-7xl flex-col gap-2 py-2 text-sm sm:flex-row sm:items-center sm:justify-between"
+    class="container-px mx-auto flex max-w-7xl flex-col gap-1.5 py-2 text-[0.82rem] sm:flex-row sm:items-center sm:justify-between"
   >
-    <p class="flex items-center gap-2 text-white/90">
-      <Megaphone size={16} class="shrink-0 text-lime-400" />
+    <p class="flex items-center gap-2">
+      <span class="inline-block h-1.5 w-1.5 rounded-full bg-lime-400" aria-hidden="true"></span>
       <span>
-        <span class="font-semibold text-white">Admissions enquiries open</span>
-        <span class="hidden sm:inline"> — BiPC, CEC & Civics/Sociology streams.</span>
+        <span class="font-semibold text-white">Admission enquiries open</span>
+        <span class="hidden text-white/60 sm:inline"> — for the new intermediate batch.</span>
       </span>
     </p>
 
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-1">
       <a
         href={`tel:${contact.phoneRaw}`}
-        class="inline-flex items-center gap-1.5 text-white/85 transition hover:text-lime-300"
+        class="inline-flex items-center gap-1.5 transition hover:text-lime-300"
       >
-        <Phone size={14} /> Call
+        <Phone size={13} /> Call
       </a>
       <a
         href={`https://wa.me/${contact.whatsapp}`}
         target="_blank"
         rel="noopener"
-        class="inline-flex items-center gap-1.5 text-white/85 transition hover:text-lime-300"
+        class="inline-flex items-center gap-1.5 transition hover:text-lime-300"
       >
-        <MessageCircle size={14} /> WhatsApp
+        <MessageCircle size={13} /> WhatsApp
       </a>
       <a
         href={contact.mapLink}
         target="_blank"
         rel="noopener"
-        class="inline-flex items-center gap-1.5 text-white/85 transition hover:text-lime-300"
+        class="inline-flex items-center gap-1.5 transition hover:text-lime-300"
       >
-        <MapPin size={14} /> Directions
-      </a>
-      <a
-        href="/#admissions"
-        class="inline-flex items-center gap-1.5 rounded-full bg-lime-500 px-3 py-1 font-semibold text-ink-900 transition hover:bg-lime-400"
-      >
-        Enquiry
+        <MapPin size={13} /> Directions
       </a>
     </div>
   </div>
