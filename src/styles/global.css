@@ -247,6 +247,48 @@ body {
   .hero-bg-img { transform: none !important; transition: none !important; }
 }
 
+/* Legibility for hero text layered directly over the campus photo */
+.hero-readable h1,
+.hero-readable .kicker {
+  text-shadow: 0 1px 18px rgba(8, 18, 33, 0.45);
+}
+.hero-readable p {
+  text-shadow: 0 1px 12px rgba(8, 18, 33, 0.4);
+}
+
+/* Notice card ↔ collapsed pill cross-fade.
+   Default: card in flow, pill absolute + hidden.
+   Collapsed: card absolute + hidden, pill in flow + shown. */
+.hero-card,
+.hero-pill {
+  transition:
+    opacity 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+[data-hero-card-wrap] .hero-pill {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+[data-hero-card-wrap][data-collapsed="true"] .hero-card {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(6px) scale(0.985);
+  pointer-events: none;
+}
+[data-hero-card-wrap][data-collapsed="true"] .hero-pill {
+  position: static;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
 /* Hero staged entrance (load-driven, independent of scroll) */
 .js [data-hero-item] {
   opacity: 0;

@@ -105,7 +105,25 @@ export interface HeroImageSources {
   mobileFallback: string;
 }
 
+export interface HeroCta {
+  label: string;
+  href: string;
+}
+
 export interface HeroData {
+  /** Small eyebrow line above the heading. */
+  eyebrow: string;
+  /** Heading is split so the middle phrase can be emphasised in italic. */
+  headingPre: string;
+  headingEm: string;
+  headingPost: string;
+  /** Short supporting paragraph. */
+  intro: string;
+  /** Quiet meta chips shown under the CTAs. */
+  chips: string[];
+  /** Primary (solid) and secondary (text) calls to action. */
+  primaryCta: HeroCta;
+  secondaryCta: HeroCta;
   backgroundImage: HeroImageSources;
 }
 
@@ -151,6 +169,19 @@ export const college: CollegeData = {
   // Optimized, responsive hero sources (regenerate with `npm run optimize:hero`
   // after replacing the source PNG).
   hero: {
+    eyebrow: "Junior & Intermediate College · Adilabad",
+    headingPre: "A focused place for ",
+    headingEm: "intermediate",
+    headingPost: " study in Adilabad.",
+    intro:
+      "Guided two-year streams — BiPC, CEC and Civics / Sociology / Public Administration — in a calm, disciplined environment.",
+    chips: [
+      "Co-Education",
+      "Intermediate (BiPC · CEC · CSP)",
+      "Adilabad, Telangana",
+    ],
+    primaryCta: { label: "Admission enquiry", href: "/#admissions" },
+    secondaryCta: { label: "Explore courses", href: "/#courses" },
     backgroundImage: {
       avif: "/images/campus/crescent-campus-hero-bg.avif",
       webp: "/images/campus/crescent-campus-hero-bg.webp",

@@ -1,13 +1,18 @@
 ---
-import { ArrowRight, ArrowUpRight, Phone } from "lucide-astro";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Phone,
+  Bell,
+  EyeOff,
+  X,
+  MessageCircle,
+} from "lucide-astro";
 import { college, formatDate } from "../data/college";
 
-const chips = [college.coed, "Intermediate (BiPC · CEC · CSP)", "Adilabad, Telangana"];
+const { hero, contact } = college;
 
-// Optimized hero background sources (avif → webp → fallback, with mobile crops).
-const hero = college.hero.backgroundImage;
-
-// Latest three notices power the static, institutional notice list.
+// Latest notices power both the compact hero card and the full "Open" modal.
 const heroUpdates = [...college.updates]
   .sort((a, b) => {
     if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
@@ -16,186 +21,279 @@ const heroUpdates = [...college.updates]
   .slice(0, 3);
 ---
 
-<section id="home" class="relative border-b border-line bg-paper">
-  <div class="mx-auto grid max-w-[100rem] lg:grid-cols-2 lg:items-stretch">
-    <!-- ============================================================ -->
-    <!--  Campus building image — top on mobile, right half on desktop -->
-    <!-- ============================================================ -->
-    <div
-      class="hero-band relative order-1 min-h-[56vw] overflow-hidden sm:min-h-[40vw] lg:order-2 lg:min-h-[42rem]"
-      data-hero-band
-    >
-      <!-- Responsive, format-optimized campus background. Source order:
-           AVIF → WebP → fallback; mobile crops swap in under 768px.
-           Layered as an absolute background so the hero can later become a
-           full-background composition (overlay + content stacked above). -->
-      <picture>
-        <source
-          type="image/avif"
-          media="(max-width: 767px)"
-          srcset={hero.mobileAvif}
-        />
-        <source
-          type="image/webp"
-          media="(max-width: 767px)"
-          srcset={hero.mobileWebp}
-        />
-        <source media="(max-width: 767px)" srcset={hero.mobileFallback} />
-        <source type="image/avif" srcset={hero.avif} />
-        <source type="image/webp" srcset={hero.webp} />
-        <img
-          src={hero.fallback}
-          alt={`${college.name} campus building in Adilabad`}
-          width="1672"
-          height="941"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          data-hero-bg
-          class="hero-bg-img absolute inset-0 h-full w-full object-cover object-top sm:object-[60%_center]"
-        />
-      </picture>
-      <!-- Edge gradient: blends image into the paper panel; very light over building -->
-      <div
-        class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-900/30 to-transparent lg:bg-gradient-to-l lg:from-transparent lg:via-transparent lg:to-paper"
-        aria-hidden="true"
-      >
+<!-- ================================================================= -->
+<!--  Full-bleed campus hero: background image → overlay → layered text -->
+<!--  and an interactive notice/admission card.                         -->
+<!-- ================================================================= -->
+<section
+  id="home"
+  class="hero-full hero-band relative isolate overflow-hidden bg-ink-900 text-white"
+  data-hero-band
+>
+  <!-- Background campus image as a true full hero layer.
+       Source order preserved: AVIF → WebP → fallback; mobile crops < 768px. -->
+  <picture>
+    <source type="image/avif" media="(max-width: 767px)" srcset={hero.backgroundImage.mobileAvif} />
+    <source type="image/webp" media="(max-width: 767px)" srcset={hero.backgroundImage.mobileWebp} />
+    <source media="(max-width: 767px)" srcset={hero.backgroundImage.mobileFallback} />
+    <source type="image/avif" srcset={hero.backgroundImage.avif} />
+    <source type="image/webp" srcset={hero.backgroundImage.webp} />
+    <img
+      src={hero.backgroundImage.fallback}
+      alt={`${college.name} campus building in Adilabad`}
+      width="1672"
+      height="941"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      data-hero-bg
+      class="hero-bg-img absolute inset-0 -z-10 h-full w-full object-cover object-[center_top] sm:object-[60%_center] lg:object-center"
+    />
+  </picture>
+
+  <!-- Readable overlay: left → right ink gradient protects text while the
+       building stays visible on the right; a bottom fade anchors content. -->
+  <div
+    class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-ink-900/90 via-ink-900/55 to-ink-900/15"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink-900/85 via-ink-900/15 to-ink-900/35 sm:to-transparent"
+    aria-hidden="true"
+  >
+  </div>
+
+  <!-- Content grid: text lower-left, notice/admission card lower-right -->
+  <div
+    class="container-px relative mx-auto flex min-h-[88svh] max-w-[100rem] flex-col justify-end gap-9 pb-12 pt-24 sm:min-h-[80vh] sm:pt-28 sm:pb-14 lg:min-h-[44rem] lg:flex-row lg:items-end lg:justify-between lg:gap-12 lg:pb-16"
+  >
+    <!-- Text layer -->
+    <div class="hero-readable max-w-xl" data-hero-stage>
+      <p class="kicker !text-cyan-300" data-hero-item>{hero.eyebrow}</p>
+
+      <h1 class="t-hero mt-5 font-serif font-medium text-white" data-hero-item>
+        {hero.headingPre}<em class="font-normal italic text-cyan-300">{hero.headingEm}</em>{hero.headingPost}
+      </h1>
+
+      <p class="mt-5 max-w-md text-[1rem] leading-relaxed text-white/75" data-hero-item>
+        {hero.intro}
+      </p>
+
+      <!-- CTAs: one solid, one editorial text link -->
+      <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3" data-hero-item>
+        <a
+          href={hero.primaryCta.href}
+          class="group inline-flex items-center gap-2 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-ink-900/30 transition hover:bg-brand-500"
+        >
+          {hero.primaryCta.label}
+          <ArrowRight size={15} class="transition-transform group-hover:translate-x-0.5" />
+        </a>
+        <a
+          href={hero.secondaryCta.href}
+          class="link-underline inline-flex items-center gap-1.5 text-sm font-semibold text-white"
+        >
+          {hero.secondaryCta.label} <ArrowUpRight size={15} class="text-cyan-300" />
+        </a>
       </div>
+
+      <!-- Chips: quiet inline meta row -->
+      <p
+        class="mt-7 border-t border-white/15 pt-4 text-[0.8rem] font-medium text-white/65"
+        data-hero-item
+      >
+        {hero.chips.join("  ·  ")}
+      </p>
     </div>
 
-    <!-- ============================================================ -->
-    <!--  Editorial content panel — on paper, never over the building  -->
-    <!-- ============================================================ -->
-    <div
-      class="container-px order-2 flex flex-col justify-center py-10 sm:py-12 lg:order-1 lg:py-20"
+    <!-- Notice / admission card layer (lower-right). Wrapper holds both the
+         expanded card and its collapsed pill so they can cross-fade. -->
+    <aside
+      class="relative w-full shrink-0 lg:w-[21rem]"
+      data-hero-item
+      data-hero-card-wrap
+      data-collapsed="false"
     >
-      <div class="mx-auto w-full max-w-xl lg:mr-0" data-hero-stage>
-        <p class="kicker" data-hero-item>Junior &amp; Intermediate College · Adilabad</p>
-
-        <h1 class="t-hero mt-5 font-serif font-medium text-ink-900" data-hero-item>
-          A focused place for
-          <em class="font-normal italic text-brand-700">intermediate</em> study in Adilabad.
-        </h1>
-
-        <p class="mt-5 max-w-md text-[1rem] leading-relaxed text-ink-400" data-hero-item>
-          Guided two-year streams — BiPC, CEC and Civics / Sociology / Public
-          Administration — in a calm, disciplined environment.
-        </p>
-
-        <!-- CTAs: one solid, one editorial text link -->
-        <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3" data-hero-item>
-          <a
-            href="/#admissions"
-            class="group inline-flex items-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-800"
+      <!-- Expanded card -->
+      <div
+        class="hero-card overflow-hidden rounded-card border border-white/15 bg-ink-900/55 backdrop-blur-md"
+        data-hero-card
+      >
+        <div class="flex items-center justify-between border-b border-white/10 px-4 py-3">
+          <span class="inline-flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-white/80">
+            <Bell size={13} class="text-cyan-300" /> Notice board
+          </span>
+          <button
+            type="button"
+            data-hero-hide
+            class="inline-flex items-center gap-1 rounded-full border border-white/20 px-2.5 py-1 text-[0.68rem] font-semibold text-white/80 transition hover:bg-white/10 focus-visible:bg-white/10"
+            aria-label="Hide the notice board card"
           >
-            Admission enquiry
-            <ArrowRight size={15} class="transition-transform group-hover:translate-x-0.5" />
-          </a>
-          <a
-            href="/#courses"
-            class="link-underline inline-flex items-center gap-1.5 text-sm font-semibold text-ink-900"
-          >
-            Explore courses <ArrowUpRight size={15} class="text-brand-700" />
-          </a>
+            <EyeOff size={12} /> Hide
+          </button>
         </div>
 
-        <!-- Chips: quiet inline meta row -->
-        <p
-          class="mt-7 border-t border-line pt-4 text-[0.8rem] font-medium text-ink-400"
-          data-hero-item
-        >
-          {chips.join("  ·  ")}
-        </p>
-
-        <!-- Notice + enquiry panel (clickable rows) -->
-        <aside class="mt-7" data-hero-item>
-      <div class="rounded-card border border-line bg-surface">
-        <div class="flex items-center justify-between border-b border-line px-5 py-3.5">
-          <span class="kicker kicker-center !text-ink-400">Notice board</span>
-          <span
-            class="rounded-full border border-line px-2.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-ink-400"
-            >Demo</span
-          >
-        </div>
-
-        <ul class="divide-y divide-line">
+        <ul class="divide-y divide-white/10">
           {
-            heroUpdates.map((u) => (
-              <li>
+            heroUpdates.map((u, i) => (
+              <li class={`hero-note${i > 0 ? " hidden sm:block" : ""}`}>
                 <a
                   href="/updates"
-                  class="group flex items-start gap-4 px-5 py-4 transition hover:bg-paper"
+                  class="group flex items-start gap-3 px-4 py-3 transition hover:bg-white/[0.06]"
                 >
-                  <span class="mt-0.5 flex w-11 shrink-0 flex-col items-center rounded-md border border-line bg-paper py-1 leading-none">
-                    <span class="font-serif text-base font-medium text-brand-700">
+                  <span class="mt-0.5 flex w-10 shrink-0 flex-col items-center rounded-md border border-white/15 bg-white/[0.04] py-1 leading-none">
+                    <span class="font-serif text-[0.95rem] font-medium text-cyan-300">
                       {formatDate(u.date).split(" ")[0]}
                     </span>
-                    <span class="text-[0.6rem] font-semibold uppercase tracking-wide text-ink-400">
+                    <span class="text-[0.55rem] font-semibold uppercase tracking-wide text-white/55">
                       {formatDate(u.date).split(" ")[1]}
                     </span>
                   </span>
                   <span class="min-w-0">
                     <span class="flex items-center gap-2">
-                      <span class="text-[0.62rem] font-semibold uppercase tracking-wider text-brand-700">
+                      <span class="text-[0.6rem] font-semibold uppercase tracking-wider text-cyan-300">
                         {u.category}
                       </span>
                       {u.pinned && (
-                        <span class="h-1.5 w-1.5 rounded-full bg-lime-500" title="Pinned" />
+                        <span class="h-1.5 w-1.5 rounded-full bg-lime-400" title="Pinned" />
                       )}
                     </span>
-                    <span class="mt-1 block text-sm font-medium leading-snug text-ink-900 group-hover:text-brand-700">
+                    <span class="mt-0.5 block text-[0.82rem] font-medium leading-snug text-white group-hover:text-cyan-200">
                       {u.title}
                     </span>
                   </span>
-                  <ArrowUpRight
-                    size={15}
-                    class="ml-auto mt-1 shrink-0 text-ink-400 opacity-0 transition group-hover:opacity-100"
-                  />
                 </a>
               </li>
             ))
           }
         </ul>
 
-        <!-- Compact enquiry strip -->
-        <div class="flex items-center gap-2 border-t border-line p-3">
-          <a
-            href="/updates"
-            class="flex-1 rounded-lg px-3 py-2.5 text-center text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
+        <!-- Card actions: Open (full details modal) + Call office -->
+        <div class="flex items-center gap-2 border-t border-white/10 p-2.5">
+          <button
+            type="button"
+            data-hero-open
+            class="flex-1 rounded-lg bg-white/10 px-3 py-2 text-center text-[0.82rem] font-semibold text-white transition hover:bg-white/15 focus-visible:bg-white/15"
+            aria-haspopup="dialog"
+            aria-controls="hero-modal"
           >
-            All updates
-          </a>
+            Open
+          </button>
           <a
-            href={`tel:${college.contact.phoneRaw}`}
-            class="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-ink-900 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-ink-700"
+            href={`tel:${contact.phoneRaw}`}
+            class="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-brand-600 px-3 py-2 text-[0.82rem] font-semibold text-white transition hover:bg-brand-500"
           >
-            <Phone size={14} /> Call office
+            <Phone size={13} /> Call
           </a>
         </div>
       </div>
-        </aside>
+
+      <!-- Collapsed pill (revealed when the card is hidden) -->
+      <button
+        type="button"
+        data-hero-show
+        class="hero-pill inline-flex items-center gap-2 rounded-full border border-white/20 bg-ink-900/60 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-ink-900/80 focus-visible:bg-ink-900/80"
+        aria-label="Show the notice board card"
+      >
+        <Bell size={14} class="text-cyan-300" /> Notice
+      </button>
+    </aside>
+  </div>
+
+  <!-- ============================================================ -->
+  <!--  Full notice / admission modal (opened by the card's "Open")  -->
+  <!-- ============================================================ -->
+  <div
+    id="hero-modal"
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="hero-modal-title"
+    data-open="false"
+  >
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel p-6 sm:p-7">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="kicker">Notices &amp; admissions</p>
+          <h2 id="hero-modal-title" class="t-h3 mt-3 font-serif font-medium text-ink-900">
+            Latest from the college
+          </h2>
+        </div>
+        <button
+          type="button"
+          data-close
+          class="-mr-1 -mt-1 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-ink-400 transition hover:bg-paper focus-visible:bg-paper"
+          aria-label="Close"
+        >
+          <X size={17} />
+        </button>
+      </div>
+
+      <ul class="mt-5 space-y-4">
+        {
+          heroUpdates.map((u) => (
+            <li class="border-l-2 border-brand-200 pl-4">
+              <div class="flex items-center gap-2">
+                <span class="text-[0.62rem] font-semibold uppercase tracking-wider text-brand-700">
+                  {u.category}
+                </span>
+                <span class="text-[0.72rem] text-ink-400">{formatDate(u.date)}</span>
+              </div>
+              <h3 class="mt-1 font-serif text-base font-medium leading-snug text-ink-900">
+                {u.title}
+              </h3>
+              <p class="mt-1 text-[0.88rem] leading-relaxed text-ink-400">{u.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="mt-6 flex flex-col gap-2 border-t border-line pt-5 sm:flex-row">
+        <a
+          href="/#admissions"
+          data-close
+          class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-800"
+        >
+          Admission enquiry <ArrowRight size={15} />
+        </a>
+        <a
+          href={`https://wa.me/${contact.whatsapp}`}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-line px-4 py-2.5 text-sm font-semibold text-ink-900 transition hover:border-ink-900"
+        >
+          <MessageCircle size={15} class="text-lime-600" /> WhatsApp
+        </a>
+        <a
+          href="/updates"
+          class="inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
+        >
+          All updates <ArrowUpRight size={15} />
+        </a>
       </div>
     </div>
   </div>
 </section>
 
 <script>
-  // Staged hero entrance — fire after the splash has cleared (or immediately
-  // for returning visitors / reduced motion).
+  /* ---------------------------------------------------------------- *
+   *  Hero entrance — staged reveal once the splash has cleared.        *
+   * ---------------------------------------------------------------- */
   const items = Array.from(document.querySelectorAll<HTMLElement>("[data-hero-item]"));
-  // `.splash-seen` is set by the head script before the splash runs, so it
-  // reliably marks returning visitors (the splash sets storage after this).
   const seen = document.documentElement.classList.contains("splash-seen");
   const startDelay = seen ? 60 : 1150; // let the splash clear on first load
-  const runIn = () => items.forEach((el, i) => (el.style.transitionDelay = `${i * 90}ms`, el.classList.add("is-in")));
+  const runIn = () =>
+    items.forEach((el, i) => ((el.style.transitionDelay = `${i * 90}ms`), el.classList.add("is-in")));
   if (items.length) window.setTimeout(() => requestAnimationFrame(runIn), startDelay);
 
-  // Ken-burns settle on the campus image once the band is ready.
+  // Background scale-in settle.
   const band = document.querySelector<HTMLElement>("[data-hero-band]");
   window.setTimeout(() => band?.classList.add("is-in"), Math.min(startDelay, 200));
 
-  // Very light parallax drift on the building (skipped for reduced motion).
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Very light parallax drift on the building (desktop, motion allowed).
   const bg = document.querySelector<HTMLElement>("[data-hero-bg]");
   if (bg && !reduce && window.matchMedia("(min-width: 1024px)").matches) {
     let ticking = false;
@@ -212,4 +310,62 @@ const heroUpdates = [...college.updates]
       { passive: true },
     );
   }
+
+  /* ---------------------------------------------------------------- *
+   *  Notice card: Hide → pill (persisted), pill → restore card.        *
+   * ---------------------------------------------------------------- */
+  const wrap = document.querySelector<HTMLElement>("[data-hero-card-wrap]");
+  const hideBtn = wrap?.querySelector<HTMLButtonElement>("[data-hero-hide]");
+  const showBtn = wrap?.querySelector<HTMLButtonElement>("[data-hero-show]");
+  const STORE = "cjc_hero_card";
+
+  const setCollapsed = (collapsed: boolean, focusTarget?: HTMLElement) => {
+    if (!wrap) return;
+    wrap.setAttribute("data-collapsed", String(collapsed));
+    try {
+      if (collapsed) sessionStorage.setItem(STORE, "hidden");
+      else sessionStorage.removeItem(STORE);
+    } catch (e) {}
+    // Move focus to the now-visible control for keyboard continuity.
+    focusTarget?.focus();
+  };
+
+  // Restore persisted state for this session (no focus shift on load).
+  try {
+    if (wrap && sessionStorage.getItem(STORE) === "hidden") {
+      wrap.setAttribute("data-collapsed", "true");
+    }
+  } catch (e) {}
+
+  hideBtn?.addEventListener("click", () => setCollapsed(true, showBtn ?? undefined));
+  showBtn?.addEventListener("click", () => setCollapsed(false, hideBtn ?? undefined));
+
+  /* ---------------------------------------------------------------- *
+   *  "Open" → accessible notice/admission modal (Escape + focus).      *
+   * ---------------------------------------------------------------- */
+  const modal = document.getElementById("hero-modal");
+  const openBtn = wrap?.querySelector<HTMLButtonElement>("[data-hero-open]");
+  let lastFocused: HTMLElement | null = null;
+
+  const openModal = () => {
+    if (!modal) return;
+    lastFocused = document.activeElement as HTMLElement;
+    modal.setAttribute("data-open", "true");
+    document.body.style.overflow = "hidden";
+    modal.querySelector<HTMLElement>("[data-close]")?.focus();
+  };
+  const closeModal = () => {
+    if (!modal) return;
+    modal.setAttribute("data-open", "false");
+    document.body.style.overflow = "";
+    lastFocused?.focus();
+  };
+
+  openBtn?.addEventListener("click", openModal);
+  modal?.querySelectorAll("[data-close]").forEach((el) =>
+    el.addEventListener("click", closeModal),
+  );
+  document.addEventListener("keydown", (e) => {
+    if (modal?.getAttribute("data-open") === "true" && e.key === "Escape") closeModal();
+  });
 </script>
