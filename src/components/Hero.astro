@@ -13,65 +13,79 @@ const heroUpdates = [...college.updates]
   .slice(0, 3);
 ---
 
-<section id="home" class="relative overflow-hidden border-b border-line bg-paper">
-  <!-- Subtle floating watermark -->
-  <img
-    src="/brand/logo-watermark-subtle.png"
-    alt=""
-    aria-hidden="true"
-    loading="eager"
-    data-parallax
-    class="pointer-events-none absolute -right-24 -top-16 w-[24rem] max-w-[60%] opacity-[0.05] transition-transform duration-300 ease-out lg:w-[32rem]"
-  />
-
-  <div
-    class="container-px relative mx-auto grid max-w-7xl items-center gap-y-10 py-12 sm:py-14 lg:grid-cols-12 lg:gap-x-14 lg:py-20"
-  >
-    <!-- Left: editorial copy -->
-    <div class="lg:col-span-7" data-reveal-group>
-      <p class="kicker" data-reveal>Junior &amp; Intermediate College · Adilabad</p>
-
-      <h1
-        class="mt-5 max-w-xl font-serif text-[2rem] font-medium leading-[1.14] text-ink-900 sm:text-[2.4rem] lg:text-[2.85rem]"
-        data-reveal
+<section id="home" class="relative border-b border-line bg-paper">
+  <div class="mx-auto grid max-w-[100rem] lg:grid-cols-2 lg:items-stretch">
+    <!-- ============================================================ -->
+    <!--  Campus building image — top on mobile, right half on desktop -->
+    <!-- ============================================================ -->
+    <div
+      class="hero-band relative order-1 min-h-[56vw] overflow-hidden sm:min-h-[40vw] lg:order-2 lg:min-h-[42rem]"
+      data-hero-band
+    >
+      <img
+        src={college.heroImage}
+        alt={`${college.name} campus building in Adilabad`}
+        width="1920"
+        height="1280"
+        loading="eager"
+        fetchpriority="high"
+        data-hero-bg
+        class="hero-bg-img absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-center"
+      />
+      <!-- Edge gradient: blends image into the paper panel; very light over building -->
+      <div
+        class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-900/30 to-transparent lg:bg-gradient-to-l lg:from-transparent lg:via-transparent lg:to-paper"
+        aria-hidden="true"
       >
-        A focused place for
-        <em class="font-normal italic text-brand-700">intermediate</em> study in Adilabad.
-      </h1>
-
-      <p class="mt-5 max-w-md text-[1rem] leading-relaxed text-ink-400" data-reveal>
-        Guided two-year streams — BiPC, CEC and Civics / Sociology / Public
-        Administration — in a calm, disciplined environment.
-      </p>
-
-      <!-- CTAs: one solid, one editorial text link -->
-      <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3" data-reveal>
-        <a
-          href="/#admissions"
-          class="group inline-flex items-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-800"
-        >
-          Admission enquiry
-          <ArrowRight size={15} class="transition-transform group-hover:translate-x-0.5" />
-        </a>
-        <a
-          href="/#courses"
-          class="link-underline inline-flex items-center gap-1.5 text-sm font-semibold text-ink-900"
-        >
-          Explore courses <ArrowUpRight size={15} class="text-brand-700" />
-        </a>
       </div>
-
-      <!-- Chips: quiet inline meta row -->
-      <p
-        class="mt-8 border-t border-line pt-4 text-[0.8rem] font-medium text-ink-400"
-        data-reveal
-      >
-        {chips.join("  ·  ")}
-      </p>
     </div>
 
-    <!-- Right: editorial notice + enquiry panel (clickable rows) -->
-    <aside class="lg:col-span-5" data-reveal style="--reveal-delay:140ms">
+    <!-- ============================================================ -->
+    <!--  Editorial content panel — on paper, never over the building  -->
+    <!-- ============================================================ -->
+    <div
+      class="container-px order-2 flex flex-col justify-center py-10 sm:py-12 lg:order-1 lg:py-20"
+    >
+      <div class="mx-auto w-full max-w-xl lg:mr-0" data-hero-stage>
+        <p class="kicker" data-hero-item>Junior &amp; Intermediate College · Adilabad</p>
+
+        <h1 class="t-hero mt-5 font-serif font-medium text-ink-900" data-hero-item>
+          A focused place for
+          <em class="font-normal italic text-brand-700">intermediate</em> study in Adilabad.
+        </h1>
+
+        <p class="mt-5 max-w-md text-[1rem] leading-relaxed text-ink-400" data-hero-item>
+          Guided two-year streams — BiPC, CEC and Civics / Sociology / Public
+          Administration — in a calm, disciplined environment.
+        </p>
+
+        <!-- CTAs: one solid, one editorial text link -->
+        <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3" data-hero-item>
+          <a
+            href="/#admissions"
+            class="group inline-flex items-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-800"
+          >
+            Admission enquiry
+            <ArrowRight size={15} class="transition-transform group-hover:translate-x-0.5" />
+          </a>
+          <a
+            href="/#courses"
+            class="link-underline inline-flex items-center gap-1.5 text-sm font-semibold text-ink-900"
+          >
+            Explore courses <ArrowUpRight size={15} class="text-brand-700" />
+          </a>
+        </div>
+
+        <!-- Chips: quiet inline meta row -->
+        <p
+          class="mt-7 border-t border-line pt-4 text-[0.8rem] font-medium text-ink-400"
+          data-hero-item
+        >
+          {chips.join("  ·  ")}
+        </p>
+
+        <!-- Notice + enquiry panel (clickable rows) -->
+        <aside class="mt-7" data-hero-item>
       <div class="rounded-card border border-line bg-surface">
         <div class="flex items-center justify-between border-b border-line px-5 py-3.5">
           <span class="kicker kicker-center !text-ink-400">Notice board</span>
@@ -136,15 +150,31 @@ const heroUpdates = [...college.updates]
           </a>
         </div>
       </div>
-    </aside>
+        </aside>
+      </div>
+    </div>
   </div>
 </section>
 
 <script>
-  // Very light parallax drift on the watermark (skipped for reduced motion).
+  // Staged hero entrance — fire after the splash has cleared (or immediately
+  // for returning visitors / reduced motion).
+  const items = Array.from(document.querySelectorAll<HTMLElement>("[data-hero-item]"));
+  // `.splash-seen` is set by the head script before the splash runs, so it
+  // reliably marks returning visitors (the splash sets storage after this).
+  const seen = document.documentElement.classList.contains("splash-seen");
+  const startDelay = seen ? 60 : 1150; // let the splash clear on first load
+  const runIn = () => items.forEach((el, i) => (el.style.transitionDelay = `${i * 90}ms`, el.classList.add("is-in")));
+  if (items.length) window.setTimeout(() => requestAnimationFrame(runIn), startDelay);
+
+  // Ken-burns settle on the campus image once the band is ready.
+  const band = document.querySelector<HTMLElement>("[data-hero-band]");
+  window.setTimeout(() => band?.classList.add("is-in"), Math.min(startDelay, 200));
+
+  // Very light parallax drift on the building (skipped for reduced motion).
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const el = document.querySelector<HTMLElement>("[data-parallax]");
-  if (el && !reduce) {
+  const bg = document.querySelector<HTMLElement>("[data-hero-bg]");
+  if (bg && !reduce && window.matchMedia("(min-width: 1024px)").matches) {
     let ticking = false;
     window.addEventListener(
       "scroll",
@@ -152,7 +182,7 @@ const heroUpdates = [...college.updates]
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
-          el.style.transform = `translateY(${window.scrollY * 0.06}px)`;
+          bg.style.transform = `scale(1) translateY(${window.scrollY * 0.05}px)`;
           ticking = false;
         });
       },

@@ -1,0 +1,34 @@
+---
+// First-load splash. CSS auto-dismisses it (works even if JS fails); the inline
+// head script in Layout adds `.splash-seen` for returning visitors so it shows
+// only once per browser session.
+---
+
+<div id="splash" role="status" aria-label="Crescent Junior College" aria-live="polite">
+  <span class="splash-ring" aria-hidden="true"></span>
+  <img
+    src="/brand/logo-hero.png"
+    alt=""
+    aria-hidden="true"
+    width="132"
+    height="132"
+    class="splash-logo"
+    fetchpriority="high"
+  />
+  <span class="splash-name">Crescent Junior College</span>
+  <span class="splash-sub">Adilabad</span>
+</div>
+
+<script>
+  // Mark this session so the splash is skipped on subsequent navigations.
+  try {
+    sessionStorage.setItem("cjc_splash", "1");
+  } catch (e) {
+    /* storage blocked — splash still self-dismisses via CSS */
+  }
+  // Remove from the DOM after it finishes, so it never traps focus/clicks.
+  const splash = document.getElementById("splash");
+  splash?.addEventListener("animationend", (e) => {
+    if ((e as AnimationEvent).animationName.startsWith("splash-out")) splash.remove();
+  });
+</script>

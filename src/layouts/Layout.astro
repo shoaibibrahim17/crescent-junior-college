@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { college } from "../data/college";
+import Splash from "../components/Splash.astro";
 
 export interface Props {
   title?: string;
@@ -49,6 +50,17 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- Enable JS-only entrance animations (no-JS users see all content) and
+         skip the splash for returning visitors — before first paint. -->
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      try {
+        if (sessionStorage.getItem("cjc_splash")) {
+          document.documentElement.classList.add("splash-seen");
+        }
+      } catch (e) {}
+    </script>
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={college.seo.keywords.join(", ")} />
@@ -88,6 +100,7 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
+    <Splash />
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-700 focus:px-4 focus:py-2 focus:text-white"

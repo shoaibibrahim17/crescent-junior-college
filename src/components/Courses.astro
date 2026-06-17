@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight } from "lucide-astro";
+import { ArrowUpRight, ChevronDown } from "lucide-astro";
 import { college } from "../data/college";
 
 const { courses } = college;
@@ -17,7 +17,7 @@ const accents = {
     <div class="grid gap-8 lg:grid-cols-12 lg:items-end" data-reveal-group>
       <div class="lg:col-span-8">
         <p class="kicker" data-reveal>Courses offered</p>
-        <h2 class="mt-5 max-w-xl font-serif text-[1.7rem] font-medium leading-tight text-ink-900 sm:text-[2rem]" data-reveal>
+        <h2 class="mt-5 max-w-xl t-h2 font-serif font-medium text-ink-900" data-reveal>
           Three intermediate streams, each with a clear direction.
         </h2>
       </div>
@@ -112,22 +112,35 @@ const accents = {
                 </p>
                 <p class="mt-2 leading-relaxed text-ink-500">{c.suitsFor}</p>
 
-                <p class="mt-7 text-xs font-semibold uppercase tracking-wider text-ink-400">
-                  Future pathways
-                </p>
-                <ul class="mt-3 space-y-2.5">
-                  {c.pathways.map((p) => (
-                    <li class="flex items-start gap-3 text-[0.95rem] leading-relaxed text-ink-500">
-                      <span class={`mt-2 h-1 w-3 shrink-0 rounded-full ${accents[c.accent].dot}`} />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
+                <button
+                  type="button"
+                  class="acc-trigger accordion-trigger mt-7 flex w-full items-center justify-between gap-3 border-t border-line pt-4 text-left"
+                  aria-expanded="false"
+                  aria-controls={`paths-${c.code}`}
+                  data-acc={`paths-${c.code}`}
+                >
+                  <span class="text-xs font-semibold uppercase tracking-wider text-ink-400">
+                    View future pathways
+                  </span>
+                  <ChevronDown size={16} class="accordion-chevron shrink-0 text-ink-400" />
+                </button>
+                <div id={`paths-${c.code}`} class="accordion-panel" data-open="false">
+                  <div class="accordion-inner">
+                    <ul class="mt-3 space-y-2.5">
+                      {c.pathways.map((p) => (
+                        <li class="flex items-start gap-3 text-[0.95rem] leading-relaxed text-ink-500">
+                          <span class={`mt-2 h-1 w-3 shrink-0 rounded-full ${accents[c.accent].dot}`} />
+                          {p}
+                        </li>
+                      ))}
+                    </ul>
+                    <p class="mt-4 text-xs leading-relaxed text-ink-400">
+                      Pathways are indicative and depend on each student’s results and
+                      further entrance requirements.
+                    </p>
+                  </div>
+                </div>
 
-                <p class="mt-6 text-xs leading-relaxed text-ink-400">
-                  Pathways are indicative and depend on each student’s results and
-                  further entrance requirements.
-                </p>
                 <a
                   href="/#admissions"
                   class="link-underline mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-900"
@@ -188,4 +201,14 @@ const accents = {
       activate(tabs[next].dataset.code!);
     }),
   );
+
+  // Pathways accordions (one per course panel)
+  document.querySelectorAll<HTMLButtonElement>(".acc-trigger").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const panel = document.getElementById(btn.dataset.acc!);
+      const open = panel?.getAttribute("data-open") === "true";
+      panel?.setAttribute("data-open", String(!open));
+      btn.setAttribute("aria-expanded", String(!open));
+    });
+  });
 </script>

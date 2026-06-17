@@ -102,6 +102,8 @@ export interface CollegeData {
   /** Establishment year is conflicting online — left null deliberately. */
   established: string | null;
   intro: string;
+  /** Hero campus/building background image (under /public). Editable. */
+  heroImage: string;
   nav: NavLink[];
   contact: ContactDetails;
   courses: Course[];
@@ -123,6 +125,9 @@ export const college: CollegeData = {
   coed: "Co-Education",
   // Public sources disagree on the founding year — do not display until verified.
   established: null, // TO BE CONFIRMED
+
+  // Hero campus background. Swap this path to replace the building image.
+  heroImage: "/images/campus/crescent-campus-hero-bg.png",
 
   intro:
     "Crescent Junior College is an intermediate (junior) college in Adilabad, Telangana, offering guided two-year intermediate education across science and commerce/arts streams in a disciplined, student-focused learning environment.",
