@@ -193,30 +193,91 @@ body {
 /* ------------------------------------------------------------------ */
 /*  Reveal-on-scroll (IntersectionObserver) — soft blur + slide        */
 /* ------------------------------------------------------------------ */
+/* Entrance uses ONLY transform + opacity (both GPU-composited) so it stays
+   at 60fps on the older phones common in the college's catchment area.
+   A previous blur() filter was removed — filters force per-frame repaints. */
 .js [data-reveal] {
   opacity: 0;
   transform: translateY(16px);
-  filter: blur(5px);
   transition:
-    opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
-    filter 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
 [data-reveal].is-visible {
   opacity: 1;
   transform: none;
-  filter: none;
 }
 
-/* Auto-stagger: children of a [data-reveal-group] cascade in */
-[data-reveal-group] > [data-reveal]:nth-child(1) { --reveal-delay: 0ms; }
-[data-reveal-group] > [data-reveal]:nth-child(2) { --reveal-delay: 70ms; }
-[data-reveal-group] > [data-reveal]:nth-child(3) { --reveal-delay: 140ms; }
-[data-reveal-group] > [data-reveal]:nth-child(4) { --reveal-delay: 210ms; }
-[data-reveal-group] > [data-reveal]:nth-child(5) { --reveal-delay: 280ms; }
-[data-reveal-group] > [data-reveal]:nth-child(6) { --reveal-delay: 350ms; }
+/* Auto-stagger: children of a [data-reveal-group] cascade in.
+   Gated to ≥1024px — on desktop cards sit side by side, so a staggered
+   cascade reads well. On mobile cards stack vertically and the observer
+   reveals each one as it scrolls in, so a delay would just make later
+   cards feel laggy (waiting on the index of off-screen siblings). */
+@media (min-width: 1024px) {
+  [data-reveal-group] > [data-reveal]:nth-child(1) { --reveal-delay: 0ms; }
+  [data-reveal-group] > [data-reveal]:nth-child(2) { --reveal-delay: 70ms; }
+  [data-reveal-group] > [data-reveal]:nth-child(3) { --reveal-delay: 140ms; }
+  [data-reveal-group] > [data-reveal]:nth-child(4) { --reveal-delay: 210ms; }
+  [data-reveal-group] > [data-reveal]:nth-child(5) { --reveal-delay: 280ms; }
+  [data-reveal-group] > [data-reveal]:nth-child(6) { --reveal-delay: 350ms; }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Card interaction — premium lift on hover-capable pointers only      */
+/* ------------------------------------------------------------------ */
+/* The whole block is gated behind (hover: hover) and (pointer: fine).
+   Touch devices never match it, so a tap can't leave a card stuck in a
+   hover state. Only transform + box-shadow animate (compositor-friendly). */
+@media (hover: hover) and (pointer: fine) {
+  .card-lift {
+    transition:
+      transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: transform;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px -18px rgba(17, 35, 59, 0.28);
+  }
+
+  /* Subtle label rise on the course tabs (layout-safe: the absolute
+     underline bar is a sibling, so it stays pinned to the tablist rule). */
+  .course-tab .tab-label {
+    transition:
+      transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.2s ease;
+  }
+  .course-tab:hover .tab-label {
+    transform: translateY(-2px);
+  }
+
+  /* Why-Crescent items are real cards only below lg (horizontal rail).
+     At lg they flatten into borderless list rows, where a lift/shadow
+     would look detached — so neutralise it there. */
+  @media (min-width: 1024px) {
+    .why-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+/* Honour reduced-motion: keep the hover state instant + flat. */
+@media (prefers-reduced-motion: reduce) {
+  .card-lift,
+  .course-tab .tab-label {
+    transition: none !important;
+  }
+  .card-lift:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .course-tab:hover .tab-label {
+    transform: none !important;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

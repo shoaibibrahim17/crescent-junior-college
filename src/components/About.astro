@@ -43,11 +43,11 @@ const facts = [
         <dl class="mt-8 grid grid-cols-1 sm:grid-cols-2" data-reveal>
           {
             facts.map((f) => (
-              <div class="flex items-baseline justify-between gap-4 border-t border-line py-3.5 sm:odd:pr-8 sm:even:border-l sm:even:pl-8">
+              <div class="flex items-baseline justify-between gap-5 border-t border-line py-4 sm:gap-4 sm:py-3.5 sm:odd:pr-8 sm:even:border-l sm:even:pl-8">
                 <dt class="text-xs font-semibold uppercase tracking-wider text-ink-400">
                   {f.label}
                 </dt>
-                <dd class="text-right text-sm font-medium text-ink-900">{f.value}</dd>
+                <dd class="text-right text-sm font-medium leading-relaxed text-ink-900">{f.value}</dd>
               </div>
             ))
           }
