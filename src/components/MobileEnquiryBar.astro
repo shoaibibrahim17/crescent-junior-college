@@ -1,0 +1,57 @@
+---
+import { Phone, MessageCircle, ClipboardList } from "lucide-astro";
+import { college } from "../data/college";
+
+const { contact } = college;
+---
+
+<!-- Sticky bottom action bar — phones only. Appears after the hero scrolls past. -->
+<div
+  id="mobile-bar"
+  class="fixed inset-x-0 bottom-0 z-40 translate-y-full border-t border-line bg-surface/95 backdrop-blur-md transition-transform duration-300 md:hidden"
+  style="padding-bottom: env(safe-area-inset-bottom, 0px);"
+>
+  <div class="grid grid-cols-3 divide-x divide-line">
+    <a
+      href={`tel:${contact.phoneRaw}`}
+      class="flex flex-col items-center gap-1 py-2.5 text-[0.72rem] font-semibold text-ink-700 transition active:bg-paper"
+    >
+      <Phone size={18} class="text-brand-700" /> Call
+    </a>
+    <a
+      href={`https://wa.me/${contact.whatsapp}`}
+      target="_blank"
+      rel="noopener"
+      class="flex flex-col items-center gap-1 py-2.5 text-[0.72rem] font-semibold text-ink-700 transition active:bg-paper"
+    >
+      <MessageCircle size={18} class="text-lime-600" /> WhatsApp
+    </a>
+    <a
+      href="/#admissions"
+      class="flex flex-col items-center gap-1 bg-brand-700 py-2.5 text-[0.72rem] font-semibold text-white transition active:bg-brand-800"
+    >
+      <ClipboardList size={18} /> Enquiry
+    </a>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById("mobile-bar");
+  const hero = document.getElementById("home");
+  document.body.classList.add("has-mobile-bar");
+
+  if (bar && hero && "IntersectionObserver" in window) {
+    // Reveal the bar once the hero is mostly scrolled out of view.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const show = !entry.isIntersecting;
+        bar.classList.toggle("translate-y-full", !show);
+      },
+      { rootMargin: "-60% 0px 0px 0px" },
+    );
+    io.observe(hero);
+  } else {
+    // No hero on this page (inner pages) — show the bar immediately.
+    bar?.classList.remove("translate-y-full");
+  }
+</script>

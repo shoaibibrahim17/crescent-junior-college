@@ -5,6 +5,7 @@ import Header from "../components/Header.astro";
 import PageHeader from "../components/PageHeader.astro";
 import Updates from "../components/Updates.astro";
 import Footer from "../components/Footer.astro";
+import MobileEnquiryBar from "../components/MobileEnquiryBar.astro";
 import { college } from "../data/college";
 
 const title = `Updates & Notices | ${college.name}, Adilabad`;
@@ -25,4 +26,5 @@ const description =
     <Updates showFilters={true} />
   </main>
   <Footer />
+  <MobileEnquiryBar />
 </Layout>

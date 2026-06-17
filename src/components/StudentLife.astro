@@ -6,6 +6,8 @@ import {
   Lightbulb,
   CalendarHeart,
   Sprout,
+  ArrowLeft,
+  ArrowRight,
 } from "lucide-astro";
 
 // Academic, local-feeling student-life points — no fabricated facilities.
@@ -28,31 +30,81 @@ const items = [
     class="pointer-events-none absolute -left-24 bottom-[-3rem] w-80 opacity-[0.04]"
   />
   <div class="container-px section-y relative mx-auto max-w-7xl">
-    <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
-      <div class="lg:col-span-4">
+    <div class="flex items-end justify-between gap-6" data-reveal-group>
+      <div class="max-w-md">
         <p class="kicker !text-cyan-400" data-reveal>Student life</p>
         <h2 class="mt-5 font-serif text-[1.7rem] font-medium leading-tight text-white sm:text-[2rem]" data-reveal>
           A calm daily rhythm.
         </h2>
         <p class="mt-4 leading-relaxed text-white/60" data-reveal>
-          Everyday life here is built around steady study, guidance and a familiar
-          campus community — academic, not flashy.
+          Built around steady study, guidance and a familiar campus community.
         </p>
       </div>
 
-      <ul class="grid gap-x-12 sm:grid-cols-2 lg:col-span-8" data-reveal-group>
-        {
-          items.map((item) => (
-            <li class="flex items-start gap-4 border-t border-white/10 py-5" data-reveal>
-              <item.icon size={18} class="mt-0.5 shrink-0 text-lime-400" />
+      <!-- Arrow controls (hidden on smallest screens; swipe works there) -->
+      <div class="hidden shrink-0 gap-2 sm:flex" data-reveal>
+        <button
+          type="button"
+          data-rail-prev
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:bg-white/10 disabled:opacity-30"
+          aria-label="Previous"
+        >
+          <ArrowLeft size={17} />
+        </button>
+        <button
+          type="button"
+          data-rail-next
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:bg-white/10 disabled:opacity-30"
+          aria-label="Next"
+        >
+          <ArrowRight size={17} />
+        </button>
+      </div>
+    </div>
+
+    <!-- Horizontal scroll rail -->
+    <ul
+      data-rail
+      class="scroll-rail mt-9 flex snap-x gap-3 overflow-x-auto pb-2"
+      data-reveal
+    >
+      {
+        items.map((item) => (
+          <li class="w-[78%] shrink-0 sm:w-[44%] lg:w-[31%]">
+            <div class="flex h-full flex-col gap-6 rounded-card border border-white/10 bg-white/[0.03] p-5 transition hover:border-white/25 hover:bg-white/[0.06]">
+              <item.icon size={20} class="text-lime-400" />
               <div>
                 <h3 class="font-serif text-lg font-medium text-white">{item.title}</h3>
-                <p class="mt-1 text-[0.92rem] leading-relaxed text-white/55">{item.text}</p>
+                <p class="mt-1.5 text-[0.9rem] leading-relaxed text-white/55">{item.text}</p>
               </div>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>
+
+<script>
+  const rail = document.querySelector<HTMLElement>("[data-rail]");
+  const prev = document.querySelector<HTMLButtonElement>("[data-rail-prev]");
+  const next = document.querySelector<HTMLButtonElement>("[data-rail-next]");
+
+  if (rail) {
+    const step = () => Math.round(rail.clientWidth * 0.8);
+    const update = () => {
+      const max = rail.scrollWidth - rail.clientWidth - 4;
+      prev?.toggleAttribute("disabled", rail.scrollLeft <= 4);
+      next?.toggleAttribute("disabled", rail.scrollLeft >= max);
+    };
+    prev?.addEventListener("click", () =>
+      rail.scrollBy({ left: -step(), behavior: "smooth" }),
+    );
+    next?.addEventListener("click", () =>
+      rail.scrollBy({ left: step(), behavior: "smooth" }),
+    );
+    rail.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+</script>

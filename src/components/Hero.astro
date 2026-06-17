@@ -25,58 +25,49 @@ const heroUpdates = [...college.updates]
   />
 
   <div
-    class="container-px relative mx-auto grid max-w-7xl items-center gap-y-12 py-14 sm:py-16 lg:grid-cols-12 lg:gap-x-12 lg:py-24"
+    class="container-px relative mx-auto grid max-w-7xl items-center gap-y-10 py-12 sm:py-14 lg:grid-cols-12 lg:gap-x-14 lg:py-20"
   >
     <!-- Left: editorial copy -->
     <div class="lg:col-span-7" data-reveal-group>
-      <p class="kicker" data-reveal>Junior &amp; Intermediate College · Est. in Adilabad</p>
+      <p class="kicker" data-reveal>Junior &amp; Intermediate College · Adilabad</p>
 
       <h1
-        class="mt-6 max-w-2xl font-serif text-[2.1rem] font-medium leading-[1.12] text-ink-900 sm:text-[2.7rem] lg:text-[3.15rem]"
+        class="mt-5 max-w-xl font-serif text-[2rem] font-medium leading-[1.14] text-ink-900 sm:text-[2.4rem] lg:text-[2.85rem]"
         data-reveal
       >
         A focused place for
-        <em class="font-normal italic text-brand-700">intermediate</em> study,
-        rooted in Adilabad.
+        <em class="font-normal italic text-brand-700">intermediate</em> study in Adilabad.
       </h1>
 
-      <p class="mt-6 max-w-xl text-[1.02rem] leading-relaxed text-ink-400" data-reveal>
-        Crescent Junior College offers guided two-year intermediate streams —
-        BiPC, CEC and a Civics, Sociology &amp; Public Administration group — in a
-        calm, disciplined environment built around steady study.
+      <p class="mt-5 max-w-md text-[1rem] leading-relaxed text-ink-400" data-reveal>
+        Guided two-year streams — BiPC, CEC and Civics / Sociology / Public
+        Administration — in a calm, disciplined environment.
       </p>
 
       <!-- CTAs: one solid, one editorial text link -->
-      <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4" data-reveal>
+      <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3" data-reveal>
         <a
           href="/#admissions"
-          class="group inline-flex items-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-800"
+          class="group inline-flex items-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-800"
         >
           Admission enquiry
-          <ArrowRight size={16} class="transition-transform group-hover:translate-x-0.5" />
+          <ArrowRight size={15} class="transition-transform group-hover:translate-x-0.5" />
         </a>
         <a
           href="/#courses"
           class="link-underline inline-flex items-center gap-1.5 text-sm font-semibold text-ink-900"
         >
-          Explore the courses <ArrowUpRight size={15} class="text-brand-700" />
+          Explore courses <ArrowUpRight size={15} class="text-brand-700" />
         </a>
       </div>
 
-      <!-- Chips: inline editorial row with hairline dividers -->
-      <ul
-        class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-5 text-sm text-ink-400"
+      <!-- Chips: quiet inline meta row -->
+      <p
+        class="mt-8 border-t border-line pt-4 text-[0.8rem] font-medium text-ink-400"
         data-reveal
       >
-        {
-          chips.map((chip, i) => (
-            <li class="flex items-center gap-5">
-              {i > 0 && <span class="hidden h-3 w-px bg-line sm:inline-block" aria-hidden="true" />}
-              <span class="font-medium">{chip}</span>
-            </li>
-          ))
-        }
-      </ul>
+        {chips.join("  ·  ")}
+      </p>
     </div>
 
     <!-- Right: editorial notice + enquiry panel (clickable rows) -->

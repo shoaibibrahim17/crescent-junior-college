@@ -222,3 +222,52 @@ p {
 .animate-float-slow {
   animation: float-slow 13s ease-in-out infinite;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Accordion (grid-rows trick — animates height without fixed px)     */
+/* ------------------------------------------------------------------ */
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.42s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.accordion-panel > .accordion-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.accordion-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.accordion-trigger[aria-expanded="true"] .accordion-chevron {
+  transform: rotate(180deg);
+}
+.accordion-chevron {
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Horizontal scroll rail (Student life carousel)                     */
+/* ------------------------------------------------------------------ */
+.scroll-rail {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.scroll-rail::-webkit-scrollbar { display: none; }
+.scroll-rail > * { scroll-snap-align: start; }
+
+/* ------------------------------------------------------------------ */
+/*  Sticky mobile enquiry bar — keep content clear of it on phones     */
+/* ------------------------------------------------------------------ */
+@media (max-width: 767px) {
+  body.has-mobile-bar {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-panel,
+  .accordion-chevron {
+    transition: none !important;
+  }
+}

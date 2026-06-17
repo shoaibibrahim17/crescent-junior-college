@@ -33,22 +33,17 @@ const facts = [
         </figure>
       </div>
 
-      <!-- Right: body + facts + emblem plate -->
+      <!-- Right: short body + key identity facts -->
       <div class="lg:col-span-7" data-reveal-group>
         <p class="max-w-xl text-[1.05rem] leading-relaxed text-ink-500" data-reveal>
           {college.intro}
         </p>
-        <p class="mt-4 max-w-xl leading-relaxed text-ink-400" data-reveal>
-          The college concentrates on the two-year intermediate programme —
-          guiding each student to the right stream and supporting them through to
-          their public examinations, close to home in Adilabad.
-        </p>
 
         <!-- Facts: editorial definition rows with hairlines -->
-        <dl class="mt-9 grid grid-cols-1 sm:grid-cols-2" data-reveal>
+        <dl class="mt-8 grid grid-cols-1 sm:grid-cols-2" data-reveal>
           {
             facts.map((f) => (
-              <div class="flex items-baseline justify-between gap-4 border-t border-line py-3.5 sm:odd:pr-8 sm:even:pl-8 sm:even:border-l">
+              <div class="flex items-baseline justify-between gap-4 border-t border-line py-3.5 sm:odd:pr-8 sm:even:border-l sm:even:pl-8">
                 <dt class="text-xs font-semibold uppercase tracking-wider text-ink-400">
                   {f.label}
                 </dt>
@@ -58,25 +53,13 @@ const facts = [
           }
         </dl>
 
-        <!-- Emblem plate: intentional placeholder for a campus photo -->
-        <figure
-          class="bg-grain relative mt-8 flex aspect-[16/7] items-center justify-center overflow-hidden rounded-card border border-line bg-paper-2"
+        <a
+          href="/courses"
+          class="link-underline mt-7 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-900"
           data-reveal
         >
-          <img
-            src="/brand/logo-watermark-visible.png"
-            alt="Crescent Junior College emblem"
-            width="120"
-            height="120"
-            loading="lazy"
-            class="h-24 w-24 object-contain opacity-90"
-          />
-          <figcaption
-            class="absolute bottom-3 left-4 text-[0.7rem] font-medium uppercase tracking-wider text-ink-400"
-          >
-            Campus photo to be added
-          </figcaption>
-        </figure>
+          See the streams we offer →
+        </a>
       </div>
     </div>
   </div>
