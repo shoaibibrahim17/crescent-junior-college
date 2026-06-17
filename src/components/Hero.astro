@@ -4,6 +4,9 @@ import { college, formatDate } from "../data/college";
 
 const chips = [college.coed, "Intermediate (BiPC · CEC · CSP)", "Adilabad, Telangana"];
 
+// Optimized hero background sources (avif → webp → fallback, with mobile crops).
+const hero = college.hero.backgroundImage;
+
 // Latest three notices power the static, institutional notice list.
 const heroUpdates = [...college.updates]
   .sort((a, b) => {
@@ -22,16 +25,36 @@ const heroUpdates = [...college.updates]
       class="hero-band relative order-1 min-h-[56vw] overflow-hidden sm:min-h-[40vw] lg:order-2 lg:min-h-[42rem]"
       data-hero-band
     >
-      <img
-        src={college.heroImage}
-        alt={`${college.name} campus building in Adilabad`}
-        width="1920"
-        height="1280"
-        loading="eager"
-        fetchpriority="high"
-        data-hero-bg
-        class="hero-bg-img absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-center"
-      />
+      <!-- Responsive, format-optimized campus background. Source order:
+           AVIF → WebP → fallback; mobile crops swap in under 768px.
+           Layered as an absolute background so the hero can later become a
+           full-background composition (overlay + content stacked above). -->
+      <picture>
+        <source
+          type="image/avif"
+          media="(max-width: 767px)"
+          srcset={hero.mobileAvif}
+        />
+        <source
+          type="image/webp"
+          media="(max-width: 767px)"
+          srcset={hero.mobileWebp}
+        />
+        <source media="(max-width: 767px)" srcset={hero.mobileFallback} />
+        <source type="image/avif" srcset={hero.avif} />
+        <source type="image/webp" srcset={hero.webp} />
+        <img
+          src={hero.fallback}
+          alt={`${college.name} campus building in Adilabad`}
+          width="1672"
+          height="941"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          data-hero-bg
+          class="hero-bg-img absolute inset-0 h-full w-full object-cover object-top sm:object-[60%_center]"
+        />
+      </picture>
       <!-- Edge gradient: blends image into the paper panel; very light over building -->
       <div
         class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-900/30 to-transparent lg:bg-gradient-to-l lg:from-transparent lg:via-transparent lg:to-paper"
