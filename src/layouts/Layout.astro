@@ -1,23 +1,121 @@
+---
+import "../styles/global.css";
+import { college } from "../data/college";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  /** Path of the current page for canonical/OG URLs, e.g. "/updates". */
+  path?: string;
+}
+
+const {
+  title = college.seo.title,
+  description = college.seo.description,
+  path = "/",
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, "") ?? "";
+const canonical = siteUrl + path;
+const ogImage = siteUrl + college.seo.ogImage;
+const { contact } = college;
+
+// JSON-LD structured data for local + education SEO.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollegeOrUniversity",
+  name: college.name,
+  description: college.seo.description,
+  url: siteUrl || canonical,
+  logo: siteUrl + "/brand/logo-header.png",
+  image: ogImage,
+  email: contact.email,
+  telephone: contact.phoneRaw,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: contact.address,
+    addressLocality: contact.city,
+    addressRegion: contact.state,
+    addressCountry: contact.country,
+  },
+  areaServed: `${contact.city}, ${contact.state}`,
+};
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={college.seo.keywords.join(", ")} />
+    <meta name="author" content={college.name} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0a55b7" />
+
+    <!-- Icons & manifest -->
+    <link rel="icon" type="image/svg+xml" href="/brand/crescent-logo-recreated.svg" />
+    <link rel="icon" href="/brand/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
+    <link rel="manifest" href="/brand/site.webmanifest" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={college.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Fonts (preconnect + display swap, lightweight) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-700 focus:px-4 focus:py-2 focus:text-white"
+      >Skip to content</a
+    >
+    <slot />
+
+    <!-- Global reveal-on-scroll (respects prefers-reduced-motion via CSS) -->
+    <script>
+      const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reduce || !("IntersectionObserver" in window)) {
+        items.forEach((el) => el.classList.add("is-visible"));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                (entry.target as HTMLElement).classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+        );
+        items.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

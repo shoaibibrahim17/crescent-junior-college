@@ -1,0 +1,30 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AnnouncementStrip from "../components/AnnouncementStrip.astro";
+import Header from "../components/Header.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Courses from "../components/Courses.astro";
+import Admissions from "../components/Admissions.astro";
+import Footer from "../components/Footer.astro";
+import { college } from "../data/college";
+
+const title = `Courses — BiPC, CEC & CSP | ${college.name}, Adilabad`;
+const description =
+  "Intermediate streams at Crescent Junior College, Adilabad — BiPC (Botany, Zoology, Physics, Chemistry), CEC (Civics, Economics, Commerce) and Civics/Sociology/Public Administration.";
+---
+
+<Layout title={title} description={description} path="/courses">
+  <AnnouncementStrip />
+  <Header />
+  <main id="main">
+    <PageHeader
+      eyebrow="Courses offered"
+      title="Intermediate streams"
+      description="Choose from three two-year intermediate groups. Explore subjects, who each stream suits, and the pathways it can open."
+      current="Courses"
+    />
+    <Courses />
+    <Admissions />
+  </main>
+  <Footer />
+</Layout>

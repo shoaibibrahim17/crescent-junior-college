@@ -1,0 +1,199 @@
+---
+import {
+  GraduationCap,
+  Users,
+  MapPin,
+  BookOpen,
+  ArrowRight,
+  Bell,
+  Phone,
+} from "lucide-astro";
+import { college, formatDate } from "../data/college";
+
+const chips = [
+  { icon: Users, label: college.coed },
+  { icon: GraduationCap, label: "Intermediate Courses" },
+  { icon: MapPin, label: "Adilabad, Telangana" },
+  { icon: BookOpen, label: "BiPC · CEC · CSP" },
+];
+
+// Up to three latest updates power the rotating notice card.
+const heroUpdates = college.updates.slice(0, 3);
+---
+
+<section id="home" class="relative overflow-hidden bg-paper">
+  <!-- Decorative watermark logo -->
+  <img
+    src="/brand/logo-watermark-subtle.png"
+    alt=""
+    aria-hidden="true"
+    loading="eager"
+    class="animate-float-slow pointer-events-none absolute -right-16 -top-10 w-[26rem] max-w-[70%] opacity-[0.06] sm:opacity-[0.08] lg:w-[34rem]"
+  />
+  <div
+    class="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]"
+  >
+  </div>
+
+  <div
+    class="container-px relative mx-auto grid max-w-7xl items-center gap-10 py-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12 lg:py-20"
+  >
+    <!-- Left: copy -->
+    <div data-reveal>
+      <p class="eyebrow mb-4">
+        <span class="h-px w-6 bg-brand-700"></span>
+        Junior / Intermediate College · Adilabad
+      </p>
+
+      <h1
+        class="font-display text-4xl font-extrabold leading-[1.08] text-ink-900 sm:text-5xl lg:text-[3.4rem]"
+      >
+        Focused intermediate education,
+        <span class="text-brand-700"> close to home in Adilabad.</span>
+      </h1>
+
+      <p class="mt-5 max-w-xl text-lg leading-relaxed text-ink-500/80">
+        Crescent Junior College offers guided two-year intermediate streams —
+        <strong class="font-semibold text-ink-900">BiPC, CEC</strong> and a
+        <strong class="font-semibold text-ink-900">Civics / Sociology / Public Administration</strong>
+        group — in a disciplined, student-focused environment.
+      </p>
+
+      <div class="mt-7 flex flex-wrap items-center gap-3">
+        <a
+          href="/#admissions"
+          class="inline-flex items-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800 hover:shadow-md"
+        >
+          Admission Enquiry <ArrowRight size={17} />
+        </a>
+        <a
+          href="/#courses"
+          class="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-surface px-6 py-3 text-sm font-semibold text-brand-700 transition hover:border-brand-700 hover:bg-brand-50"
+        >
+          View Courses
+        </a>
+      </div>
+
+      <!-- Info chips -->
+      <ul class="mt-9 flex flex-wrap gap-2.5">
+        {
+          chips.map((chip) => (
+            <li class="inline-flex items-center gap-2 rounded-full border border-mist bg-surface px-3.5 py-1.5 text-sm font-medium text-ink-500/80 shadow-[0_1px_2px_rgba(10,37,64,0.04)]">
+              <chip.icon size={15} class="text-cyan-600" />
+              {chip.label}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <!-- Right: interactive notice card -->
+    <div data-reveal style="--reveal-delay:120ms">
+      <div
+        class="relative rounded-[1.4rem] border border-mist bg-surface p-1.5 shadow-[0_18px_50px_-20px_rgba(10,37,64,0.35)]"
+      >
+        <div class="rounded-[1.05rem] bg-gradient-to-br from-brand-900 to-brand-700 p-6 text-white">
+          <div class="flex items-center justify-between">
+            <span class="inline-flex items-center gap-2 text-sm font-semibold text-lime-300">
+              <Bell size={16} /> Latest from the college
+            </span>
+            <span class="rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-medium">
+              Demo
+            </span>
+          </div>
+
+          <!-- Rotating notice -->
+          <div class="mt-5 min-h-[7.5rem]" id="hero-notice">
+            {
+              heroUpdates.map((u, i) => (
+                <article
+                  class="hero-slide transition-opacity duration-500"
+                  data-index={i}
+                  hidden={i !== 0}
+                >
+                  <p class="text-xs font-medium uppercase tracking-wide text-cyan-300">
+                    {u.category} · {formatDate(u.date)}
+                  </p>
+                  <h2 class="mt-1.5 font-display text-lg font-bold leading-snug">
+                    {u.title}
+                  </h2>
+                  <p class="mt-2 text-sm leading-relaxed text-white/75">{u.detail}</p>
+                </article>
+              ))
+            }
+          </div>
+
+          <!-- Dots -->
+          <div class="mt-4 flex gap-1.5" id="hero-dots">
+            {
+              heroUpdates.map((_, i) => (
+                <button
+                  type="button"
+                  class="hero-dot h-1.5 rounded-full bg-white/30 transition-all"
+                  class:list={[i === 0 ? "w-6 bg-white" : "w-1.5"]}
+                  data-dot={i}
+                  aria-label={`Show update ${i + 1}`}
+                />
+              ))
+            }
+          </div>
+        </div>
+
+        <!-- Quick actions footer -->
+        <div class="grid grid-cols-2 gap-2 p-3">
+          <a
+            href="/updates"
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition hover:bg-brand-100"
+          >
+            All Updates <ArrowRight size={15} />
+          </a>
+          <a
+            href={`tel:${college.contact.phoneRaw}`}
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-lime-500 px-4 py-2.5 text-sm font-semibold text-ink-900 transition hover:bg-lime-400"
+          >
+            <Phone size={15} /> Call Office
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Auto-rotating hero notice card with dot controls.
+  const slides = Array.from(document.querySelectorAll<HTMLElement>(".hero-slide"));
+  const dots = Array.from(document.querySelectorAll<HTMLButtonElement>(".hero-dot"));
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (slides.length > 1) {
+    let active = 0;
+    let timer: number | undefined;
+
+    const show = (n: number) => {
+      slides.forEach((s, i) => (s.hidden = i !== n));
+      dots.forEach((d, i) => {
+        d.classList.toggle("w-6", i === n);
+        d.classList.toggle("bg-white", i === n);
+        d.classList.toggle("w-1.5", i !== n);
+        d.classList.toggle("bg-white/30", i !== n);
+      });
+      active = n;
+    };
+
+    const start = () => {
+      if (reduce) return;
+      stop();
+      timer = window.setInterval(() => show((active + 1) % slides.length), 5000);
+    };
+    const stop = () => timer && window.clearInterval(timer);
+
+    dots.forEach((d, i) =>
+      d.addEventListener("click", () => {
+        show(i);
+        start();
+      }),
+    );
+
+    start();
+  }
+</script>

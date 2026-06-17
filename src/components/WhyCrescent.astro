@@ -1,0 +1,67 @@
+---
+import {
+  Target,
+  MapPin,
+  BookOpen,
+  Compass,
+  ShieldCheck,
+  HelpingHand,
+} from "lucide-astro";
+import { college } from "../data/college";
+
+// Map the icon names stored in college.ts to imported components.
+const icons: Record<string, any> = {
+  Target,
+  MapPin,
+  BookOpen,
+  Compass,
+  ShieldCheck,
+  HelpingHand,
+};
+---
+
+<section class="container-px mx-auto max-w-7xl py-16 lg:py-24">
+  <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+    <div data-reveal>
+      <p class="eyebrow mb-3">Why Crescent</p>
+      <h2 class="font-display text-3xl font-extrabold text-ink-900 sm:text-4xl">
+        Reasons families choose Crescent
+      </h2>
+      <p class="mt-4 text-lg leading-relaxed text-ink-500/75">
+        Practical, honest reasons — a focused college close to home, with the
+        guidance students need through their intermediate years.
+      </p>
+      <a
+        href="/#admissions"
+        class="mt-6 inline-flex items-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-800"
+      >
+        Start an enquiry
+      </a>
+    </div>
+
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {
+        college.whyPoints.map((point, i) => {
+          const Icon = icons[point.icon] ?? Target;
+          return (
+            <li
+              class="group rounded-card border border-mist bg-surface p-5 transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-[0_12px_30px_-18px_rgba(10,37,64,0.35)]"
+              data-reveal
+              style={`--reveal-delay:${i * 60}ms`}
+            >
+              <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-brand-50 to-brand-100 text-brand-700 transition group-hover:from-brand-700 group-hover:to-brand-800 group-hover:text-white">
+                <Icon size={20} />
+              </span>
+              <h3 class="mt-4 font-display font-semibold text-ink-900">
+                {point.title}
+              </h3>
+              <p class="mt-1.5 text-sm leading-relaxed text-ink-500/75">
+                {point.detail}
+              </p>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>

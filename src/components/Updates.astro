@@ -1,0 +1,165 @@
+---
+import { Pin, ArrowRight, CalendarDays, Inbox } from "lucide-astro";
+import { college, formatDate } from "../data/college";
+
+export interface Props {
+  /** Limit the number of updates shown (home preview). */
+  limit?: number;
+  /** Show the category filter bar (updates page). */
+  showFilters?: boolean;
+  /** Show the "View all updates" link (home preview). */
+  showViewAll?: boolean;
+}
+
+const { limit, showFilters = false, showViewAll = false } = Astro.props;
+
+// Newest first; pinned floats to top.
+const sorted = [...college.updates].sort((a, b) => {
+  if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
+  return b.date.localeCompare(a.date);
+});
+const items = limit ? sorted.slice(0, limit) : sorted;
+
+const categories = ["All", ...Array.from(new Set(college.updates.map((u) => u.category)))];
+
+const catStyle: Record<string, string> = {
+  Admissions: "bg-lime-50 text-lime-700 border-lime-200",
+  Academics: "bg-brand-50 text-brand-700 border-brand-200",
+  Events: "bg-cyan-50 text-cyan-700 border-cyan-200",
+  Notice: "bg-amber-50 text-amber-700 border-amber-200",
+};
+---
+
+<section id="updates" class="bg-mist/40 scroll-mt-24">
+  <div class="container-px mx-auto max-w-7xl py-16 lg:py-24">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between" data-reveal>
+      <div class="max-w-xl">
+        <p class="eyebrow mb-3">Notice board</p>
+        <h2 class="font-display text-3xl font-extrabold text-ink-900 sm:text-4xl">
+          Latest updates & notices
+        </h2>
+        <p class="mt-3 text-lg leading-relaxed text-ink-500/75">
+          Admission notices, academic information and college announcements.
+          <span class="text-ink-500/55">(Demo content — update from the office.)</span>
+        </p>
+      </div>
+      {
+        showViewAll && (
+          <a
+            href="/updates"
+            class="inline-flex w-fit items-center gap-1.5 rounded-full border border-brand-200 bg-surface px-4 py-2 text-sm font-semibold text-brand-700 transition hover:border-brand-700 hover:bg-brand-50"
+          >
+            View all updates <ArrowRight size={15} />
+          </a>
+        )
+      }
+    </div>
+
+    {
+      showFilters && (
+        <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter updates" data-reveal>
+          {categories.map((cat, i) => (
+            <button
+              type="button"
+              class:list={[
+                "filter-btn rounded-full border px-4 py-1.5 text-sm font-medium transition",
+                i === 0
+                  ? "border-brand-700 bg-brand-700 text-white"
+                  : "border-mist bg-surface text-ink-500/75 hover:border-brand-200",
+              ]}
+              data-cat={cat}
+              aria-pressed={i === 0 ? "true" : "false"}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      )
+    }
+
+    <!-- List -->
+    <ul id="updates-list" class="mt-8 grid gap-4 md:grid-cols-2">
+      {
+        items.map((u, i) => (
+          <li
+            class="update-card group flex flex-col rounded-card border border-mist bg-surface p-5 transition hover:border-brand-200 hover:shadow-[0_12px_30px_-20px_rgba(10,37,64,0.4)]"
+            data-cat={u.category}
+            data-reveal
+            style={`--reveal-delay:${i * 50}ms`}
+          >
+            <div class="flex items-center justify-between gap-3">
+              <span
+                class:list={[
+                  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold",
+                  catStyle[u.category] ?? "bg-brand-50 text-brand-700 border-brand-200",
+                ]}
+              >
+                {u.category}
+              </span>
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-ink-500/55">
+                {u.pinned && <Pin size={13} class="text-lime-600" />}
+                <CalendarDays size={13} />
+                {formatDate(u.date)}
+              </span>
+            </div>
+            <h3 class="mt-3 font-display text-lg font-semibold leading-snug text-ink-900">
+              {u.title}
+            </h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-500/75">{u.detail}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- Empty state (shown by JS when a filter has no matches, or when no updates) -->
+    <div
+      id="updates-empty"
+      class:list={[
+        "mt-8 flex-col items-center justify-center rounded-card border border-dashed border-mist bg-surface px-6 py-14 text-center",
+        items.length === 0 ? "flex" : "hidden",
+      ]}
+    >
+      <span class="flex h-12 w-12 items-center justify-center rounded-full bg-brand-50 text-brand-700">
+        <Inbox size={22} />
+      </span>
+      <p class="mt-4 font-display font-semibold text-ink-900">No updates here yet</p>
+      <p class="mt-1 text-sm text-ink-500/65">
+        New notices will appear here as the college publishes them.
+      </p>
+    </div>
+  </div>
+</section>
+
+{
+  showFilters && (
+    <script>
+      const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>(".filter-btn"));
+      const cards = Array.from(document.querySelectorAll<HTMLElement>(".update-card"));
+      const empty = document.getElementById("updates-empty");
+
+      buttons.forEach((btn) =>
+        btn.addEventListener("click", () => {
+          const cat = btn.dataset.cat;
+          buttons.forEach((b) => {
+            const on = b === btn;
+            b.setAttribute("aria-pressed", String(on));
+            b.className =
+              "filter-btn rounded-full border px-4 py-1.5 text-sm font-medium transition " +
+              (on
+                ? "border-brand-700 bg-brand-700 text-white"
+                : "border-mist bg-surface text-ink-500/75 hover:border-brand-200");
+          });
+
+          let visible = 0;
+          cards.forEach((card) => {
+            const match = cat === "All" || card.dataset.cat === cat;
+            card.classList.toggle("hidden", !match);
+            if (match) visible++;
+          });
+          empty?.classList.toggle("hidden", visible !== 0);
+          empty?.classList.toggle("flex", visible === 0);
+        }),
+      );
+    </script>
+  )
+}

@@ -1,0 +1,198 @@
+---
+import { Check, ArrowUpRight, Users, BookOpen } from "lucide-astro";
+import { college } from "../data/college";
+
+const { courses } = college;
+
+// Full literal class strings per accent so Tailwind's scanner keeps them.
+const accents = {
+  blue: {
+    tabActive: "bg-brand-700 text-white border-brand-700",
+    badge: "bg-brand-50 text-brand-700",
+    dot: "bg-brand-700",
+    ring: "group-hover:border-brand-200",
+  },
+  cyan: {
+    tabActive: "bg-cyan-600 text-white border-cyan-600",
+    badge: "bg-cyan-50 text-cyan-700",
+    dot: "bg-cyan-600",
+    ring: "group-hover:border-cyan-200",
+  },
+  lime: {
+    tabActive: "bg-lime-600 text-white border-lime-600",
+    badge: "bg-lime-50 text-lime-700",
+    dot: "bg-lime-600",
+    ring: "group-hover:border-lime-200",
+  },
+} as const;
+---
+
+<section id="courses" class="bg-mist/40 scroll-mt-24">
+  <div class="container-px mx-auto max-w-7xl py-16 lg:py-24">
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <p class="eyebrow mb-3 justify-center">Courses offered</p>
+      <h2 class="font-display text-3xl font-extrabold text-ink-900 sm:text-4xl">
+        Intermediate streams to match your direction
+      </h2>
+      <p class="mt-4 text-lg leading-relaxed text-ink-500/75">
+        Three two-year intermediate groups — pick the one that fits your interests
+        and the path you want after intermediate.
+      </p>
+    </div>
+
+    <!-- Tabs -->
+    <div
+      class="mt-10 flex flex-wrap justify-center gap-2.5"
+      role="tablist"
+      aria-label="Course streams"
+      data-reveal
+    >
+      {
+        courses.map((c, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${c.code}`}
+            aria-controls={`panel-${c.code}`}
+            aria-selected={i === 0 ? "true" : "false"}
+            class:list={[
+              "course-tab rounded-full border px-5 py-2.5 text-sm font-semibold transition",
+              i === 0
+                ? accents[c.accent].tabActive
+                : "border-mist bg-surface text-ink-500/80 hover:border-brand-200 hover:text-brand-700",
+            ]}
+            data-code={c.code}
+            data-accent={c.accent}
+          >
+            {c.code}
+          </button>
+        ))
+      }
+    </div>
+
+    <!-- Panels -->
+    <div class="mt-8">
+      {
+        courses.map((c, i) => (
+          <div
+            id={`panel-${c.code}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${c.code}`}
+            class="course-panel"
+            hidden={i !== 0}
+            data-reveal
+          >
+            <div class="grid gap-6 rounded-card border border-mist bg-surface p-6 shadow-[0_14px_40px_-24px_rgba(10,37,64,0.4)] sm:p-8 lg:grid-cols-3 lg:gap-8">
+              <div class="lg:col-span-2">
+                <span
+                  class:list={[
+                    "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide",
+                    accents[c.accent].badge,
+                  ]}
+                >
+                  {c.code}
+                </span>
+                <h3 class="mt-4 font-display text-2xl font-bold text-ink-900">
+                  {c.name}
+                </h3>
+                <p class="mt-2 text-base leading-relaxed text-ink-500/80">
+                  {c.summary}
+                </p>
+
+                <div class="mt-6">
+                  <p class="flex items-center gap-2 text-sm font-semibold text-ink-900">
+                    <BookOpen size={16} class="text-brand-700" /> Subjects
+                  </p>
+                  <ul class="mt-3 flex flex-wrap gap-2">
+                    {c.subjects.map((s) => (
+                      <li class="rounded-lg border border-mist bg-paper px-3 py-1.5 text-sm font-medium text-ink-500/85">
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="mt-6 rounded-xl bg-brand-50/70 p-4">
+                  <p class="flex items-center gap-2 text-sm font-semibold text-ink-900">
+                    <Users size={16} class="text-brand-700" /> Who it suits
+                  </p>
+                  <p class="mt-1.5 text-sm leading-relaxed text-ink-500/80">
+                    {c.suitsFor}
+                  </p>
+                </div>
+              </div>
+
+              <div class="lg:border-l lg:border-mist lg:pl-8">
+                <p class="flex items-center gap-2 text-sm font-semibold text-ink-900">
+                  <ArrowUpRight size={16} class="text-lime-600" /> Future pathways
+                </p>
+                <ul class="mt-3 space-y-2.5">
+                  {c.pathways.map((p) => (
+                    <li class="flex items-start gap-2.5 text-sm leading-relaxed text-ink-500/80">
+                      <span
+                        class:list={[
+                          "mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full",
+                          accents[c.accent].dot,
+                        ]}
+                      />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+                <p class="mt-5 text-xs leading-relaxed text-ink-500/55">
+                  Pathways are indicative and depend on each student’s results and
+                  further entrance requirements.
+                </p>
+                <a
+                  href="/#admissions"
+                  class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800"
+                >
+                  Enquire about {c.code} <ArrowUpRight size={15} />
+                </a>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>(".course-tab"));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>(".course-panel"));
+
+  const accentActive: Record<string, string> = {
+    blue: "bg-brand-700 text-white border-brand-700",
+    cyan: "bg-cyan-600 text-white border-cyan-600",
+    lime: "bg-lime-600 text-white border-lime-600",
+  };
+  const inactive =
+    "border-mist bg-surface text-ink-500/80 hover:border-brand-200 hover:text-brand-700";
+
+  function activate(code: string) {
+    tabs.forEach((tab) => {
+      const isActive = tab.dataset.code === code;
+      const accent = tab.dataset.accent ?? "blue";
+      tab.setAttribute("aria-selected", String(isActive));
+      tab.className = "course-tab rounded-full border px-5 py-2.5 text-sm font-semibold transition " +
+        (isActive ? accentActive[accent] : inactive);
+    });
+    panels.forEach((p) => (p.hidden = p.id !== `panel-${code}`));
+  }
+
+  tabs.forEach((tab) =>
+    tab.addEventListener("click", () => activate(tab.dataset.code!)),
+  );
+
+  // Keyboard arrow navigation between tabs.
+  tabs.forEach((tab, i) => {
+    tab.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      e.preventDefault();
+      const next = e.key === "ArrowRight" ? (i + 1) % tabs.length : (i - 1 + tabs.length) % tabs.length;
+      tabs[next].focus();
+      activate(tabs[next].dataset.code!);
+    });
+  });
+</script>

@@ -1,0 +1,125 @@
+---
+import {
+  MapPin,
+  Phone,
+  MessageCircle,
+  Mail,
+  Navigation,
+  Clock,
+} from "lucide-astro";
+import { college } from "../data/college";
+
+const { contact } = college;
+
+const actions = [
+  { icon: Phone, label: "Call", href: `tel:${contact.phoneRaw}`, style: "brand" },
+  {
+    icon: MessageCircle,
+    label: "WhatsApp",
+    href: `https://wa.me/${contact.whatsapp}`,
+    style: "lime",
+    external: true,
+  },
+  { icon: Navigation, label: "Directions", href: contact.mapLink, style: "outline", external: true },
+  { icon: Mail, label: "Email", href: `mailto:${contact.email}`, style: "outline" },
+];
+---
+
+<section id="contact" class="container-px mx-auto max-w-7xl scroll-mt-24 py-16 lg:py-24">
+  <div class="mx-auto max-w-2xl text-center" data-reveal>
+    <p class="eyebrow mb-3 justify-center">Contact</p>
+    <h2 class="font-display text-3xl font-extrabold text-ink-900 sm:text-4xl">
+      Visit or reach the college
+    </h2>
+    <p class="mt-4 text-lg leading-relaxed text-ink-500/75">
+      We’re in Adilabad. Call, message or drop by the office for any admission
+      query. <span class="text-ink-500/55">(Contact details to be confirmed.)</span>
+    </p>
+  </div>
+
+  <div class="mt-12 grid gap-6 lg:grid-cols-2">
+    <!-- Address & actions -->
+    <div class="flex flex-col gap-5" data-reveal>
+      <div class="rounded-card border border-mist bg-surface p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-semibold text-ink-900">
+          <MapPin size={18} class="text-brand-700" /> College address
+        </h3>
+        <address class="mt-3 not-italic leading-relaxed text-ink-500/80">
+          {college.name}<br />
+          {contact.address}<br />
+          {contact.city}, {contact.state}, {contact.country}
+        </address>
+
+        <dl class="mt-5 space-y-3 border-t border-mist pt-5 text-sm">
+          <div class="flex items-center gap-3">
+            <dt class="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
+              <Phone size={16} />
+            </dt>
+            <dd>
+              <span class="block text-xs text-ink-500/55">Phone</span>
+              <a href={`tel:${contact.phoneRaw}`} class="font-medium text-ink-900 hover:text-brand-700"
+                >{contact.phone}</a
+              >
+            </dd>
+          </div>
+          <div class="flex items-center gap-3">
+            <dt class="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
+              <Mail size={16} />
+            </dt>
+            <dd>
+              <span class="block text-xs text-ink-500/55">Email</span>
+              <a href={`mailto:${contact.email}`} class="font-medium text-ink-900 hover:text-brand-700"
+                >{contact.email}</a
+              >
+            </dd>
+          </div>
+          <div class="flex items-center gap-3">
+            <dt class="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
+              <Clock size={16} />
+            </dt>
+            <dd>
+              <span class="block text-xs text-ink-500/55">Office hours</span>
+              <span class="font-medium text-ink-900">{contact.hours}</span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+        {
+          actions.map((a) => (
+            <a
+              href={a.href}
+              {...(a.external ? { target: "_blank", rel: "noopener" } : {})}
+              class:list={[
+                "inline-flex flex-col items-center justify-center gap-1.5 rounded-xl px-3 py-3.5 text-sm font-semibold transition",
+                a.style === "brand" && "bg-brand-700 text-white hover:bg-brand-800",
+                a.style === "lime" && "bg-lime-500 text-ink-900 hover:bg-lime-400",
+                a.style === "outline" &&
+                  "border border-mist bg-surface text-ink-500/80 hover:border-brand-200 hover:text-brand-700",
+              ]}
+            >
+              <a.icon size={18} />
+              {a.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="overflow-hidden rounded-card border border-mist bg-surface" data-reveal style="--reveal-delay:100ms">
+      <iframe
+        title={`Map showing ${college.name} location in Adilabad`}
+        src={contact.mapEmbed}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        class="h-full min-h-[20rem] w-full"
+      ></iframe>
+    </div>
+  </div>
+
+  <p class="mt-6 text-center text-xs text-ink-500/55" data-reveal>
+    Map shows the Adilabad area as a placeholder — replace the embed with the exact college pin.
+  </p>
+</section>

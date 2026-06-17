@@ -1,0 +1,100 @@
+---
+import {
+  Phone,
+  MessageCircle,
+  FileCheck2,
+  Info,
+  ArrowRight,
+} from "lucide-astro";
+import { college } from "../data/college";
+
+const { admissionSteps, documents, contact } = college;
+---
+
+<section id="admissions" class="container-px mx-auto max-w-7xl scroll-mt-24 py-16 lg:py-24">
+  <div class="mx-auto max-w-2xl text-center" data-reveal>
+    <p class="eyebrow mb-3 justify-center">Admissions</p>
+    <h2 class="font-display text-3xl font-extrabold text-ink-900 sm:text-4xl">
+      A simple admission process
+    </h2>
+    <p class="mt-4 text-lg leading-relaxed text-ink-500/75">
+      Here’s how admission typically works. The college office confirms exact
+      steps, dates and fees.
+    </p>
+  </div>
+
+  <div class="mt-12 grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
+    <!-- Timeline -->
+    <ol class="relative space-y-6 border-l border-mist pl-7" data-reveal>
+      {
+        admissionSteps.map((step, i) => (
+          <li class="relative">
+            <span class="absolute -left-[2.35rem] flex h-8 w-8 items-center justify-center rounded-full bg-brand-700 text-sm font-bold text-white shadow-sm ring-4 ring-paper">
+              {i + 1}
+            </span>
+            <h3 class="font-display text-lg font-semibold text-ink-900">{step.title}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-ink-500/75">{step.detail}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <!-- Documents + CTA -->
+    <div class="flex flex-col gap-5" data-reveal style="--reveal-delay:100ms">
+      <div class="rounded-card border border-mist bg-surface p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-semibold text-ink-900">
+          <FileCheck2 size={18} class="text-lime-600" /> Documents checklist
+        </h3>
+        <ul class="mt-4 space-y-2.5">
+          {
+            documents.map((doc) => (
+              <li class="flex items-start gap-2.5 text-sm leading-relaxed text-ink-500/80">
+                <span class="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-lime-100 text-lime-700">
+                  <svg width="9" height="9" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2 6l3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+                {doc}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="rounded-card bg-gradient-to-br from-brand-900 to-brand-700 p-6 text-white">
+        <h3 class="font-display text-lg font-bold">Ready to enquire?</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-white/80">
+          Talk to the college office about streams, seats and admission.
+        </p>
+        <div class="mt-4 grid grid-cols-2 gap-2.5">
+          <a
+            href={`tel:${contact.phoneRaw}`}
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
+          >
+            <Phone size={15} /> Call
+          </a>
+          <a
+            href={`https://wa.me/${contact.whatsapp}`}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-lime-500 px-4 py-2.5 text-sm font-semibold text-ink-900 transition hover:bg-lime-400"
+          >
+            <MessageCircle size={15} /> WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <p
+    class="mt-10 flex items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-800"
+    data-reveal
+  >
+    <Info size={17} class="mt-0.5 shrink-0" />
+    <span>
+      <strong class="font-semibold">Please note:</strong> Final admission details, eligibility,
+      dates and fees should be confirmed directly with the Crescent Junior College office.
+    </span>
+  </p>
+</section>

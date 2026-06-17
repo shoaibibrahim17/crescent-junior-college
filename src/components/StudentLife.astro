@@ -1,0 +1,84 @@
+---
+import {
+  BookMarked,
+  Users2,
+  Clock4,
+  Lightbulb,
+  CalendarHeart,
+  Sprout,
+} from "lucide-astro";
+
+// Academic, local-feeling student-life points — no fabricated facilities.
+const items = [
+  {
+    icon: BookMarked,
+    title: "Study-first routine",
+    text: "Structured timetables that keep the two intermediate years on track.",
+  },
+  {
+    icon: Users2,
+    title: "Small, familiar setting",
+    text: "A college where students and teachers actually know one another.",
+  },
+  {
+    icon: Clock4,
+    title: "Regular practice",
+    text: "Steady revision and tests to build exam readiness over time.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Subject guidance",
+    text: "Help understanding concepts across science and commerce/arts subjects.",
+  },
+  {
+    icon: CalendarHeart,
+    title: "Campus occasions",
+    text: "Assemblies and college days that mark the academic calendar.",
+  },
+  {
+    icon: Sprout,
+    title: "Rooted in Adilabad",
+    text: "A local college serving students and families across the district.",
+  },
+];
+---
+
+<section class="bg-ink-900 relative overflow-hidden">
+  <img
+    src="/brand/logo-watermark-subtle.png"
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+    class="pointer-events-none absolute -left-20 bottom-0 w-96 opacity-[0.05]"
+  />
+  <div class="container-px relative mx-auto max-w-7xl py-16 lg:py-24">
+    <div class="max-w-2xl" data-reveal>
+      <p class="eyebrow mb-3 text-cyan-300">Student life</p>
+      <h2 class="font-display text-3xl font-extrabold text-white sm:text-4xl">
+        Everyday life at the college
+      </h2>
+      <p class="mt-4 text-lg leading-relaxed text-white/70">
+        A calm, academic atmosphere built around regular study, guidance and a
+        familiar campus community.
+      </p>
+    </div>
+
+    <ul class="mt-10 grid gap-px overflow-hidden rounded-card bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        items.map((item, i) => (
+          <li
+            class="bg-ink-900 p-6 transition hover:bg-white/[0.03]"
+            data-reveal
+            style={`--reveal-delay:${i * 50}ms`}
+          >
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-lime-300">
+              <item.icon size={20} />
+            </span>
+            <h3 class="mt-4 font-display font-semibold text-white">{item.title}</h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-white/65">{item.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

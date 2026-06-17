@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Update the host below to the final production domain before launch.
+Sitemap: https://crescentjuniorcollege.pages.dev/sitemap.xml

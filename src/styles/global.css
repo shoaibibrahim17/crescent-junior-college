@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Crescent Junior College — design tokens                            */
+/*  Colours derived from the logo: academic blue, cyan, fresh lime,    */
+/*  off-white surfaces and restrained dark text.                       */
+/* ------------------------------------------------------------------ */
+@theme {
+  /* Brand blues */
+  --color-ink-900: #0a2540;
+  --color-ink-700: #15315c;
+  --color-ink-500: #1e1f24;
+
+  --color-brand-900: #0a3f9b;
+  --color-brand-800: #0a4ea8;
+  --color-brand-700: #0a55b7;
+  --color-brand-600: #0f63c9;
+  --color-brand-500: #1f7ae0;
+  --color-brand-200: #cfe0fb;
+  --color-brand-100: #e7f0fd;
+  --color-brand-50: #f2f7fe;
+
+  /* Cyan accents */
+  --color-cyan-600: #0780d4;
+  --color-cyan-500: #02a6e8;
+  --color-cyan-400: #26d7ff;
+
+  /* Lime / fresh green */
+  --color-lime-700: #6f9e16;
+  --color-lime-600: #8cc629;
+  --color-lime-500: #a7d435;
+  --color-lime-400: #b9df4a;
+
+  /* Neutral surfaces */
+  --color-paper: #fbfcfe;
+  --color-surface: #ffffff;
+  --color-mist: #eef3f8;
+
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: "Poppins", "Inter", system-ui, sans-serif;
+
+  --radius-card: 1.1rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem; /* offset for sticky header on anchor jumps */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink-500);
+  background-color: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+
+::selection {
+  background: var(--color-brand-700);
+  color: #fff;
+}
+
+/* Tasteful focus ring for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--color-brand-700);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Utilities                                                          */
+/* ------------------------------------------------------------------ */
+.container-px {
+  padding-inline: 1.25rem;
+}
+@media (min-width: 1024px) {
+  .container-px {
+    padding-inline: 2rem;
+  }
+}
+
+/* Section eyebrow label */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-brand-700);
+}
+
+/* Subtle hairline grid background used on light sections */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(10, 85, 183, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10, 85, 183, 0.04) 1px, transparent 1px);
+  background-size: 38px 38px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reveal-on-scroll animation (IntersectionObserver driven)           */
+/* ------------------------------------------------------------------ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Soft floating animation for the hero watermark */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(1.5deg); }
+}
+.animate-float-slow {
+  animation: float-slow 11s ease-in-out infinite;
+}

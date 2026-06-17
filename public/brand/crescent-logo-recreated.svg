@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Crescent Junior College logo">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#B9DF4A"/>
+      <stop offset="55%" stop-color="#A7D435"/>
+      <stop offset="100%" stop-color="#8CC629"/>
+    </linearGradient>
+    <radialGradient id="globeGrad" cx="62%" cy="25%" r="80%">
+      <stop offset="0%" stop-color="#26D7FF"/>
+      <stop offset="45%" stop-color="#02A6E8"/>
+      <stop offset="100%" stop-color="#0A3F9B"/>
+    </radialGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#15315C" flood-opacity="0.14"/>
+    </filter>
+    <path id="topArc" d="M 250 392 A 320 320 0 0 1 774 392"/>
+    <path id="bottomArc" d="M 230 590 A 282 282 0 0 0 794 590"/>
+    <clipPath id="shieldClip">
+      <path d="M512 58 C608 126 705 160 878 157 L878 273 C830 284 806 321 803 373 C796 494 840 613 852 650 C810 783 683 893 512 966 C341 893 214 783 172 650 C184 613 228 494 221 373 C218 321 194 284 146 273 L146 157 C319 160 416 126 512 58 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Shield -->
+  <g filter="url(#softShadow)">
+    <path d="M512 58 C608 126 705 160 878 157 L878 273 C830 284 806 321 803 373 C796 494 840 613 852 650 C810 783 683 893 512 966 C341 893 214 783 172 650 C184 613 228 494 221 373 C218 321 194 284 146 273 L146 157 C319 160 416 126 512 58 Z" fill="url(#shieldGrad)"/>
+    <path d="M512 58 C608 126 705 160 878 157 L878 273 C830 284 806 321 803 373 C796 494 840 613 852 650 C810 783 683 893 512 966 C341 893 214 783 172 650 C184 613 228 494 221 373 C218 321 194 284 146 273 L146 157 C319 160 416 126 512 58 Z" fill="none" stroke="#9BD12D" stroke-width="18"/>
+    <path d="M512 92 C603 154 709 187 852 184 L852 254 C805 277 778 319 775 373 C769 491 812 608 824 646 C784 757 670 860 512 929 C354 860 240 757 200 646 C212 608 255 491 249 373 C246 319 219 277 172 254 L172 184 C315 187 421 154 512 92 Z" fill="none" stroke="#FFFFFF" stroke-width="16"/>
+  </g>
+
+  <!-- Top label -->
+  <text fill="#0A55B7" font-family="DejaVu Sans, Montserrat, Arial, sans-serif" font-size="74" font-weight="900" letter-spacing="11">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">CRESCENT</textPath>
+  </text>
+
+  <!-- Stars -->
+  <g fill="#FFFFFF">
+    <path d="M198 502 l13 34 h36 l-29 21 l11 35 l-31 -22 l-30 22 l11 -35 l-29 -21 h36 z"/>
+    <path d="M826 502 l13 34 h36 l-29 21 l11 35 l-31 -22 l-30 22 l11 -35 l-29 -21 h36 z"/>
+  </g>
+
+  <!-- Globe -->
+  <g>
+    <circle cx="512" cy="512" r="218" fill="url(#globeGrad)"/>
+    <circle cx="512" cy="512" r="218" fill="none" stroke="#0780D4" stroke-width="8" opacity="0.55"/>
+    <!-- abstract continents, simplified for clean vector logo -->
+    <g fill="#0A4EA8" opacity="0.80">
+      <path d="M420 332 C455 308 504 305 545 323 C517 338 488 343 462 360 C438 377 426 395 394 398 C383 378 395 350 420 332 Z"/>
+      <path d="M550 326 C612 342 664 377 701 430 C670 429 644 443 622 462 C602 478 584 473 570 448 C553 420 526 415 497 418 C486 390 505 352 550 326 Z"/>
+      <path d="M396 438 C430 425 468 438 491 463 C513 486 538 486 554 512 C577 551 557 582 519 596 C488 607 477 632 481 667 C449 651 425 619 411 584 C397 549 363 535 349 503 C359 477 371 450 396 438 Z"/>
+      <path d="M608 540 C642 531 676 545 702 573 C683 600 656 616 626 629 C591 643 573 672 562 706 C538 684 532 654 544 626 C555 597 573 551 608 540 Z"/>
+      <path d="M318 512 C334 541 351 567 376 588 C350 599 326 595 303 582 C296 556 299 529 318 512 Z" opacity="0.55"/>
+      <path d="M720 456 C743 485 752 519 747 554 C724 532 707 497 720 456 Z" opacity="0.65"/>
+    </g>  </g>
+
+  <!-- CG monogram overlay -->
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="butt" stroke-linejoin="round">
+    <path d="M570 354 A168 168 0 1 0 570 670" stroke-width="76"/>
+    <path d="M548 414 A105 105 0 1 0 548 610" stroke-width="42" opacity="0.96"/>
+  </g>
+  <g fill="#FFFFFF" font-family="DejaVu Sans, Montserrat, Arial Black, sans-serif" font-weight="900">
+    <text x="498" y="628" font-size="188">G</text>
+  </g>
+
+  <!-- Bottom label -->
+  <text fill="#1E1F24" font-family="DejaVu Sans, Montserrat, Arial, sans-serif" font-size="56" font-weight="700" letter-spacing="7">
+    <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">JUNIOR COLLEGE</textPath>
+  </text>
+</svg>
