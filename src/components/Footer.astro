@@ -1,5 +1,5 @@
 ---
-import { Phone, MessageCircle } from "lucide-astro";
+import { Phone, MessageCircle, Linkedin } from "lucide-astro";
 import { college } from "../data/college";
 
 const { contact, nav } = college;
@@ -73,10 +73,20 @@ const year = new Date().getFullYear();
     </div>
 
     <div
-      class="mt-12 flex flex-col gap-2 border-t border-line pt-6 text-xs text-ink-400 sm:flex-row sm:items-center sm:justify-between"
+      class="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-ink-400 sm:flex-row sm:items-center sm:justify-between"
     >
       <p>© {year} {college.name}, Adilabad. All rights reserved.</p>
-      <p>Demo website for client proposal — content to be confirmed by the college.</p>
+      <p class="flex items-center gap-1.5">
+        Designed &amp; developed by a former student —
+        <a
+          href="https://www.linkedin.com/in/shaikh-ibrahim17"
+          target="_blank"
+          rel="noopener"
+          class="link-underline inline-flex items-center gap-1 font-medium text-ink-500 transition hover:text-brand-700"
+        >
+          <Linkedin size={13} class="text-brand-700" /> Shaikh Ibrahim
+        </a>
+      </p>
     </div>
   </div>
 </footer>

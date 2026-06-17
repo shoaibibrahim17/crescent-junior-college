@@ -67,18 +67,23 @@ body {
   overflow-x: clip; /* safety net for full-bleed rails; keeps sticky header working */
 }
 
-/* Headings: serif, restrained weight, tuned rhythm */
-h1, h2, h3, h4 {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.16;
-  color: var(--color-ink-900);
-  text-wrap: balance;
-}
+/* Headings: serif, restrained weight, tuned rhythm.
+   Kept in @layer base so Tailwind text-colour utilities (e.g. text-white on
+   dark sections) can override the default ink-900 — unlayered rules would
+   otherwise beat all utilities and render headings invisible on dark panels. */
+@layer base {
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.16;
+    color: var(--color-ink-900);
+    text-wrap: balance;
+  }
 
-p {
-  text-wrap: pretty;
+  p {
+    text-wrap: pretty;
+  }
 }
 
 ::selection {
